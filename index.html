@@ -260,4 +260,106 @@ function mapMessage(place,description){
 const spells=[
  ['Lumos','Creates light at the tip of a wand.'],
  ['Nox','Extinguishes the light created by Lumos.'],
- ['Alohomora','Unlocks many locked doors and objects in the
+ ['Alohomora','Unlocks many locked doors and objects in the wizarding world.'],
+   ['Accio','Summons an object toward the caster.'],
+ ['Reparo','Repairs a broken object.'],
+ ['Wingardium Leviosa','Makes an object levitate.'],
+ ['Expecto Patronum','Conjures a Patronus, often used to repel Dementors.'],
+ ['Aguamenti','Produces a stream of water.']
+];
+const potions=[
+ ['Wiggenweld Potion','A healing potion from the wizarding world.','Notebook: restorative draught'],
+ ['Felix Felicis','A fictional potion said to bring temporary good luck.','Notebook: liquid luck'],
+ ['Amortentia','A powerful love potion known for its distinctive aroma.','Notebook: advanced potion'],
+ ['Polyjuice Potion','A complex potion associated with temporarily taking another person’s appearance.','Notebook: advanced transformation'],
+ ['Pepperup Potion','A potion used to help with the common cold in the wizarding world.','Notebook: warming draught']
+];
+function fillCards(target,items){
+ const root=document.getElementById(target);
+ items.forEach((item,index)=>{
+  const card=document.createElement('div');card.className=target==='spellList'?'spell':'recipe';
+  const btn=document.createElement('button');
+  const left=document.createElement('span');const title=document.createElement('strong');title.textContent=item[0];
+  const small=document.createElement('small');small.textContent=item[2]||'Tap to reveal description';
+  left.append(title,small);
+  const icon=document.createElement('span');icon.textContent='＋';btn.append(left,icon);
+  const desc=document.createElement('p');desc.textContent=item[1];desc.classList.add('hidden');
+  btn.addEventListener('click',()=>{desc.classList.toggle('hidden');icon.textContent=desc.classList.contains('hidden')?'＋':'−';});
+  card.append(btn,desc);root.append(card);
+ });
+}
+fillCards('spellList',spells);fillCards('potionList',potions);
+const characters = {
+ harry:{name:'Harry Potter',house:'Gryffindor',avatar:'⚡',status:'Gryffindor · a little shy around you',messages:[['incoming','Hey! Hermione said you were looking for me. Need help with homework?'],['incoming','Er—also, I saved you a seat at dinner. I guess I just like having you around.']]},
+ hermione:{name:'Hermione Granger',house:'Gryffindor',avatar:'📚',status:'Gryffindor · top of the class',messages:[['incoming','I found a book about enchanted phone charms. We should look at it after class!'],['incoming','And please remind Harry to finish his essay. He gets distracted whenever you walk in.']]},
+ cedric:{name:'Cedric Diggory',house:'Hufflepuff',avatar:'🏆',status:'Hufflepuff · warm-hearted champion',messages:[['incoming','Hello! I saved you a spot in the common room. There’s hot chocolate, too.'],['incoming','I really admire how kind you are to people. I always end up smiling after we talk.']]},
+ draco:{name:'Draco Malfoy',house:'Slytherin',avatar:'🐍',status:'Slytherin · pretending not to blush',messages:[['incoming','Don’t look so pleased. I only came by because this corridor is… on my way.'],['incoming','And perhaps I wanted to see you. Don’t make me repeat that, understood?']]},
+ ron:{name:'Ron Weasley',house:'Gryffindor',avatar:'♟',status:'Gryffindor · snack enthusiast',messages:[['incoming','Have you seen the snacks in the Great Hall? Important question.'],['incoming','Harry’s been acting weird around you. No idea why. Definitely not obvious.']]},
+ luna:{name:'Luna Lovegood',house:'Ravenclaw',avatar:'🌙',status:'Ravenclaw · wonderfully dreamy',messages:[['incoming','I think the ceiling stars are extra bright tonight. Maybe they’re celebrating something.'],['incoming','Harry, Cedric, and Draco all seem unusually flustered near you. Rather sweet, really.']]},
+ wonbin:{name:'Wonbin',house:'Hogwarts guest',avatar:'✉',status:'Guest owl post · fictional crossover',messages:[['incoming','Hey, did you make it back to the Hufflepuff common room? It’s freezing outside tonight.'],['incoming','Good. Save me a seat by the fireplace? I’ve got a story to tell you. ✨']]}
+};
+let currentCharacter='harry';
+const chatHistory={};
+Object.keys(characters).forEach(key=>chatHistory[key]=characters[key].messages.map(m=>({kind:m[0],text:m[1]})));
+function renderContacts(){
+ const root=document.getElementById('contactList');root.innerHTML='';
+ Object.entries(characters).forEach(([key,c])=>{
+  const b=document.createElement('button');b.className='contact'+(key===currentCharacter?' active':'');b.textContent=c.avatar+' '+c.name.split(' ')[0];b.onclick=()=>selectContact(key);root.appendChild(b);
+ });
+}
+function selectContact(key){
+ currentCharacter=key;const c=characters[key];
+ document.getElementById('chatAvatar').textContent=c.avatar;
+ document.getElementById('chatName').textContent=c.name;
+ document.getElementById('chatStatus').textContent=c.status;
+ renderContacts();renderChat();
+}
+function renderChat(){
+ const log=document.getElementById('chatLog');log.innerHTML='';
+ (chatHistory[currentCharacter]||[]).forEach(m=>addBubble(m.text,m.kind));
+ log.scrollTop=log.scrollHeight;
+}
+const replies={
+ harry:['I, um… think you’re really cool. Don’t tell Ron I said that. 😅','Want to study together after class? I promise I’ll try to focus.','Hermione says I get noticeably awkward around you. She may have a point.'],
+ hermione:['I’ve got the perfect reference book for that. Meet me in the library?','Honestly, you’re one of the nicest people in our year.','I’m writing this down before Ron interrupts us again.'],
+ cedric:['You have a way of making people feel welcome. That’s a rare thing. ✨','Would you like to walk around the courtyard after lessons? I always enjoy your company.','I get a little nervous talking to you. There, I admitted it.'],
+ draco:['Don’t look so smug. I said you were interesting, not that I was being nice.','Perhaps I do look forward to seeing you. Keep that between us.','Potter is staring again. Honestly, he’s not subtle at all.'],
+ ron:['Brilliant. Now, very important follow-up: did you bring snacks?','Harry’s gone red again. I’m not saying it’s because of you… but it’s probably because of you.','Let’s find Hermione before she discovers we skipped the reading.'],
+ luna:['That sounds lovely. I think the evening has a very friendly feeling to it. 🌙','People can be shy when they like someone. It’s rather obvious if you watch kindly.','I found a feather by the window. It might be from an owl—or a very confused hat.'],
+ wonbin:['The common room is always warmer when friends are around. ♡','I think we deserve a little break from homework tonight.','You always make an ordinary day feel a little magical. ✨']
+};
+document.getElementById('chatForm').addEventListener('submit',e=>{
+ e.preventDefault();const input=document.getElementById('chatInput');const value=input.value.trim();if(!value)return;
+ chatHistory[currentCharacter].push({kind:'outgoing',text:value});renderChat();input.value='';
+ const key=currentCharacter;
+ setTimeout(()=>{
+  const bank=replies[key]||replies.harry;
+  chatHistory[key].push({kind:'incoming',text:bank[Math.floor(Math.random()*bank.length)]});
+  if(currentCharacter===key)renderChat();
+ },450);
+});
+function addBubble(text,kind){
+ const bubble=document.createElement('div');bubble.className='bubble '+kind;
+ bubble.appendChild(document.createTextNode(text));
+ if(kind==='incoming'){const stamp=document.createElement('span');stamp.className='stamp';stamp.textContent=characters[currentCharacter].name+' · just now';bubble.appendChild(stamp);}
+ const log=document.getElementById('chatLog');log.appendChild(bubble);log.scrollTop=log.scrollHeight;
+}
+renderContacts();selectContact('harry');
+document.getElementById('galleryInput').addEventListener('change',e=>{
+ const root=document.getElementById('photos');
+ Array.from(e.target.files||[]).filter(f=>f.type.startsWith('image/')).forEach(file=>{
+  const url=URL.createObjectURL(file);const card=document.createElement('div');card.className='photo';
+  const img=document.createElement('img');img.src=url;img.alt='Your chosen photo';card.appendChild(img);root.prepend(card);
+ });
+ e.target.value='';
+});
+document.getElementById('audioInput').addEventListener('change',e=>{
+ const file=e.target.files[0];if(!file)return;
+ const audio=document.getElementById('audio');
+ if(audio.dataset.url)URL.revokeObjectURL(audio.dataset.url);
+ const url=URL.createObjectURL(file);audio.src=url;audio.dataset.url=url;
+ document.getElementById('trackName').textContent=file.name.replace(/\.[^.]+$/,'');
+});
+</script>
+</body>
+</html>
