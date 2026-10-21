@@ -3,15 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Virtual Phone | KakaoTalk Pro Edition</title>
+<title>Virtual Phone | iOS Multi-App Edition</title>
 <style>
 :root {
   --bg-dark: #000000;
   --panel: rgba(28, 28, 32, 0.85);
   --glass-border: rgba(255, 255, 255, 0.1);
-  --kakaoyellow: #fee500;
-  --kakao-incoming: #ffffff;
-  --kakotext-dark: #191919;
+  --accent: #0a84ff;
+  --incoming-msg: #262629;
   --text-main: #ffffff;
   --text-muted: #8e8e93;
   --wallpaper: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80');
@@ -24,7 +23,7 @@ body {
   color: var(--text-main); overflow: hidden;
 }
 
-/* Bingkai iPhone Pro Max (Wonbin-Phone Style) */
+/* Bingkai iPhone Pro Max */
 .phone-frame {
   position: relative; width: 390px; height: 810px; max-height: 96vh;
   background: var(--bg-dark); border: 8px solid #222226; border-radius: 52px;
@@ -54,7 +53,7 @@ body {
   cursor: pointer;
 }
 .notification-banner.show { top: 50px; }
-.notif-icon { width: 36px; height: 36px; border-radius: 50%; background: var(--kakaoyellow); color: #000; display: grid; place-items: center; font-size: 16px; font-weight: bold; flex-shrink: 0; }
+.notif-icon { width: 36px; height: 36px; border-radius: 50%; background: var(--accent); color: #fff; display: grid; place-items: center; font-size: 16px; font-weight: bold; flex-shrink: 0; }
 .notif-text { flex: 1; font-size: 12px; color: #fff; line-height: 1.3; }
 .notif-text b { display: block; font-size: 13px; color: #fff; margin-bottom: 2px; }
 
@@ -67,7 +66,7 @@ body {
 .control-center.show { transform: translateY(0); }
 .cc-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
 .cc-tile { background: rgba(255,255,255,0.08); border: 1px solid var(--glass-border); border-radius: 22px; padding: 18px; display: flex; flex-direction: column; gap: 8px; color: #fff; cursor: pointer; }
-.cc-tile.active { background: #fff; color: #000; }
+.cc-tile.active { background: var(--accent); color: #fff; }
 .cc-tile span { font-size: 24px; }
 .cc-tile b { font-size: 13px; }
 
@@ -91,7 +90,7 @@ body {
 .lock-date { font-size: 14px; color: #e5e5ea; font-weight: 500; }
 .lock-hint { font-size: 12px; color: #fff; background: rgba(255,255,255,0.2); backdrop-filter: blur(20px); padding: 10px 24px; border-radius: 30px; }
 
-/* Home Screen */
+/* Home Screen (Multi-App Grid) */
 .home-screen {
   height: 100%; padding: 24px 20px; display: flex; flex-direction: column; justify-content: space-between;
   background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.5)), var(--wallpaper) center/cover fixed;
@@ -113,37 +112,46 @@ body {
 
 /* App Headers */
 .app-header { padding: 16px 20px; background: rgba(20,20,20,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--glass-border); display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 10; }
-.back-btn { background: none; border: none; color: #fff; font-weight: 500; font-size: 15px; cursor: pointer; padding: 0; }
+.back-btn { background: none; border: none; color: var(--accent); font-weight: 500; font-size: 15px; cursor: pointer; padding: 0; }
 .app-header h2 { font-size: 16px; margin: 0; font-weight: 600; }
 
-/* --- KAKAOTALK UI STYLING --- */
-.kakao-bg { background-color: #bac7d3; display: flex; flex-direction: column; height: 100%; }
-.kakao-chat-list { padding: 12px; display: flex; flex-direction: column; gap: 8px; background: #fff; height: 100%; }
-.kakao-chat-item { display: flex; align-items: center; gap: 12px; padding: 10px; border-radius: 12px; cursor: pointer; transition: background 0.15s; }
-.kakao-chat-item:active { background: #f0f0f0; }
-.kakao-profile-img { width: 50px; height: 50px; border-radius: 20px; background: #ddd; display: grid; place-items: center; font-size: 22px; flex-shrink: 0; }
-.kakao-chat-info { flex: 1; border-bottom: 1px solid #f5f5f5; padding-bottom: 8px; }
-.kakao-chat-name { font-size: 14px; font-weight: bold; color: #191919; margin-bottom: 3px; }
-.kakao-chat-snippet { font-size: 12px; color: #8e8e93; }
+/* iMessage UI */
+.msg-bg { background-color: #000000; display: flex; flex-direction: column; height: 100%; }
+.msg-chat-list { padding: 12px; display: flex; flex-direction: column; gap: 8px; background: #000; height: 100%; }
+.msg-chat-item { display: flex; align-items: center; gap: 12px; padding: 10px; border-radius: 14px; cursor: pointer; background: rgba(255,255,255,0.04); border: 1px solid var(--glass-border); }
+.msg-profile-img { width: 48px; height: 48px; border-radius: 50%; background: #3a3a3c; display: grid; place-items: center; font-size: 20px; flex-shrink: 0; }
+.msg-chat-info { flex: 1; }
+.msg-chat-name { font-size: 14px; font-weight: bold; color: #fff; margin-bottom: 3px; }
+.msg-chat-snippet { font-size: 12px; color: var(--text-muted); }
 
-/* KakaoTalk Room */
-.kakao-messages { flex: 1; padding: 16px; display: flex; flex-direction: column; gap: 10px; overflow-y: auto; }
-.kakao-row { display: flex; align-items: flex-start; gap: 8px; max-width: 80%; }
-.kakao-row.incoming { align-self: flex-start; }
-.kakao-row.outgoing { align-self: flex-end; flex-direction: row-reverse; }
-.kakao-bubble { padding: 10px 14px; border-radius: 14px; font-size: 13px; line-height: 1.4; word-break: break-word; }
-.incoming .kakao-bubble { background: var(--kakao-incoming); color: var(--kakotext-dark); border-top-left-radius: 2px; box-shadow: 0 1px 2px rgba(0,0,0,0.08); }
-.outgoing .kakao-bubble { background: var(--kakaoyellow); color: var(--kakotext-dark); border-top-right-radius: 2px; box-shadow: 0 1px 2px rgba(0,0,0,0.08); }
-.kakao-sender { font-size: 11px; color: #444; margin-bottom: 2px; font-weight: 500; }
-.kakao-input-area { padding: 10px 14px; background: #fff; display: flex; gap: 8px; align-items: center; border-top: 1px solid #ddd; }
-.kakao-input-area input { flex: 1; background: #f5f5f5; border: none; border-radius: 20px; padding: 10px 16px; color: #191919; font-size: 13px; outline: none; }
-.kakao-send-btn { background: var(--kakaoyellow); border: none; border-radius: 50%; width: 36px; height: 36px; display: grid; place-items: center; color: #000; font-weight: bold; cursor: pointer; }
+.msg-messages { flex: 1; padding: 16px; display: flex; flex-direction: column; gap: 10px; overflow-y: auto; }
+.msg-row { display: flex; flex-direction: column; max-width: 80%; }
+.msg-row.incoming { align-self: flex-start; }
+.msg-row.outgoing { align-self: flex-end; }
+.msg-bubble { padding: 10px 16px; border-radius: 18px; font-size: 13px; line-height: 1.4; word-break: break-word; }
+.incoming .msg-bubble { background: var(--incoming-msg); color: #fff; border-bottom-left-radius: 4px; }
+.outgoing .msg-bubble { background: var(--accent); color: #fff; font-weight: 500; border-bottom-right-radius: 4px; }
+.msg-input-area { padding: 12px 16px; background: rgba(20,20,20,0.9); backdrop-filter: blur(20px); border-top: 1px solid var(--glass-border); display: flex; gap: 10px; align-items: center; }
+.msg-input-area input { flex: 1; background: #2c2c2e; border: none; border-radius: 20px; padding: 10px 16px; color: #fff; font-size: 13px; outline: none; }
+.msg-send-btn { background: var(--accent); border: none; border-radius: 50%; width: 36px; height: 36px; display: grid; place-items: center; color: #fff; font-weight: bold; cursor: pointer; }
+
+/* Notes App UI */
+.notes-wrap { padding: 16px; display: flex; flex-direction: column; gap: 12px; height: 100%; background: #000; }
+.notes-input { width: 100%; height: 120px; background: #1c1c1e; border: 1px solid var(--glass-border); border-radius: 14px; padding: 12px; color: #fff; font-size: 13px; resize: none; outline: none; }
+.notes-list { display: flex; flex-direction: column; gap: 8px; overflow-y: auto; flex: 1; }
+.note-item { background: #1c1c1e; padding: 12px; border-radius: 12px; font-size: 12px; color: #f2f2f7; border: 1px solid var(--glass-border); display: flex; justify-content: space-between; align-items: flex-start; }
+
+/* Camera App UI */
+.camera-wrap { height: 100%; background: #111; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 40px 20px; text-align: center; }
+.camera-viewfinder { width: 100%; flex: 1; border-radius: 24px; background: #222; border: 1px solid var(--glass-border); display: grid; place-items: center; font-size: 40px; margin-bottom: 20px; position: relative; overflow: hidden; }
+.shutter-btn { width: 70px; height: 70px; border-radius: 50%; background: #fff; border: 4px solid #ccc; cursor: pointer; transition: transform 0.1s; }
+.shutter-btn:active { transform: scale(0.9); }
 
 /* Gallery App */
 .gallery-wrap { padding: 16px; display: flex; flex-direction: column; gap: 14px; background: #000; height: 100%; }
-.upload-btn-label { display: block; text-align: center; border: 1.5px dashed var(--kakaoyellow); border-radius: 16px; padding: 14px; color: var(--kakaoyellow); font-size: 13px; font-weight: 600; background: var(--panel); cursor: pointer; }
+.upload-btn-label { display: block; text-align: center; border: 1.5px dashed var(--accent); border-radius: 16px; padding: 14px; color: var(--accent); font-size: 13px; font-weight: 600; background: var(--panel); cursor: pointer; }
 .upload-btn-label input { display: none; }
-.photos-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+.photos-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; overflow-y: auto; flex: 1; }
 .photo-card { aspect-ratio: 3/4; border-radius: 14px; overflow: hidden; background: #222; position: relative; border: 1px solid var(--glass-border); }
 .photo-card img { width: 100%; height: 100%; object-fit: cover; }
 .del-photo-btn { position: absolute; top: 6px; right: 6px; background: rgba(0,0,0,0.7); color: #ff3b30; border: none; border-radius: 50%; width: 22px; height: 22px; font-size: 12px; font-weight: bold; cursor: pointer; display: grid; place-items: center; }
@@ -153,13 +161,13 @@ body {
 .settings-card h3 { font-size: 14px; color: #fff; margin: 0 0 6px; }
 .settings-card p { font-size: 12px; color: var(--text-muted); margin: 0 0 12px; }
 .settings-card input { width: 100%; background: #2c2c2e; border: none; border-radius: 10px; padding: 10px 12px; color: #fff; font-size: 12px; margin-bottom: 10px; outline: none; }
-.action-btn { background: var(--kakaoyellow); border: none; border-radius: 12px; padding: 10px 18px; font-size: 12px; font-weight: 600; color: #000; cursor: pointer; }
+.action-btn { background: var(--accent); border: none; border-radius: 12px; padding: 10px 18px; font-size: 12px; font-weight: 600; color: #fff; cursor: pointer; }
 </style>
 </head>
 <body>
 
 <div class="phone-frame">
-  <!-- Status Bar & Trigger Control Center -->
+  <!-- Status Bar -->
   <div class="status-bar" onclick="toggleControlCenter()" style="cursor:pointer;">
     <span id="statusBarTime">09:41</span>
     <span style="font-size:10px; opacity:0.6;">▼ Control Center</span>
@@ -167,11 +175,11 @@ body {
   </div>
 
   <!-- Notifikasi Pop-up Ala iOS -->
-  <div class="notification-banner" id="notifBanner" onclick="openApp('kakaoList')">
+  <div class="notification-banner" id="notifBanner" onclick="openApp('msgList')">
     <div class="notif-icon">💬</div>
     <div class="notif-text">
-      <b id="notifTitle">KakaoTalk</b>
-      <span id="notifDesc">Ada pesan masuk dari Harry!</span>
+      <b id="notifTitle">Messages</b>
+      <span id="notifDesc">Ada pesan baru dari Harry!</span>
     </div>
   </div>
 
@@ -198,78 +206,108 @@ body {
     </div>
   </section>
 
-  <!-- Home Screen -->
+  <!-- Home Screen (Multi-App) -->
   <section class="screen" id="homeScreen">
     <div class="home-screen">
       <div>
         <div class="widget-box">
-          <div class="widget-avatar">💛</div>
+          <div class="widget-avatar">⚡</div>
           <div class="widget-info">
             <h3>Virtual Space</h3>
-            <p>iOS 19 • Connected</p>
+            <p>iOS 19 • Fully Functional</p>
           </div>
         </div>
 
         <div class="app-grid">
-          <button class="app-item" onclick="openApp('kakaoList')"><div class="app-icon" style="background:#fee500; color:#000;">💬</div>KakaoTalk</button>
+          <button class="app-item" onclick="openApp('msgList')"><div class="app-icon">💬</div>Messages</button>
+          <button class="app-item" onclick="openApp('notes')"><div class="app-icon" style="background:#f1c40f; color:#000;">📝</div>Notes</button>
+          <button class="app-item" onclick="openApp('camera')"><div class="app-icon" style="background:#34495e;">📷</div>Camera</button>
           <button class="app-item" onclick="openApp('gallery')"><div class="app-icon">🖼️</div>Gallery</button>
           <button class="app-item" onclick="openApp('settings')"><div class="app-icon">⚙️</div>Settings</button>
         </div>
       </div>
 
       <div class="dock">
-        <button class="app-item" onclick="openApp('kakaoList')"><div class="app-icon" style="background:#fee500; color:#000; width:54px; height:54px; border-radius:16px; display:grid; place-items:center;">💬</div></button>
-        <button class="app-item" onclick="openApp('gallery')"><div class="app-icon" style="width:54px; height:54px; border-radius:16px; display:grid; place-items:center;">🖼️</div></button>
+        <button class="app-item" onclick="openApp('msgList')"><div class="app-icon" style="width:54px; height:54px; border-radius:16px; display:grid; place-items:center;">💬</div></button>
+        <button class="app-item" onclick="openApp('notes')"><div class="app-icon" style="background:#f1c40f; color:#000; width:54px; height:54px; border-radius:16px; display:grid; place-items:center;">📝</div></button>
+        <button class="app-item" onclick="openApp('camera')"><div class="app-icon" style="background:#34495e; width:54px; height:54px; border-radius:16px; display:grid; place-items:center;">📷</div></button>
         <button class="app-item" onclick="openApp('settings')"><div class="app-icon" style="width:54px; height:54px; border-radius:16px; display:grid; place-items:center;">⚙️</div></button>
       </div>
     </div>
   </section>
 
-  <!-- KakaoTalk Chat List App -->
-  <section class="screen" id="kakaoListScreen">
-    <div class="app-header" style="background:#fee500; color:#191919;">
-      <button class="back-btn" onclick="goHome()" style="color:#191919;">‹ Home</button>
-      <h2 style="color:#191919; font-weight:700;">KakaoTalk</h2>
+  <!-- Messages Chat List App -->
+  <section class="screen" id="msgListScreen">
+    <div class="app-header">
+      <button class="back-btn" onclick="goHome()">‹ Home</button>
+      <h2>Messages</h2>
       <div style="width:40px"></div>
     </div>
-    <div class="kakao-chat-list">
-      <div class="kakao-chat-item" onclick="startChat('harry')">
-        <div class="kakao-profile-img" style="background:#4a90e2; color:#fff;">⚡</div>
-        <div class="kakao-chat-info">
-          <div class="kakao-chat-name">Harry Potter</div>
-          <div class="kakao-chat-snippet" id="snippet_harry">Lagi ngapain lu?</div>
+    <div class="msg-chat-list">
+      <div class="msg-chat-item" onclick="startChat('harry')">
+        <div class="msg-profile-img">⚡</div>
+        <div class="msg-chat-info">
+          <div class="msg-chat-name">Harry Potter</div>
+          <div class="msg-chat-snippet" id="snippet_harry">Lagi ngapain lu?</div>
         </div>
       </div>
-      <div class="kakao-chat-item" onclick="startChat('hermione')">
-        <div class="kakao-profile-img" style="background:#e74c3c; color:#fff;">📚</div>
-        <div class="kakao-chat-info">
-          <div class="kakao-chat-name">Hermione Granger</div>
-          <div class="kakao-chat-snippet" id="snippet_hermione">Udah makan belum?</div>
+      <div class="msg-chat-item" onclick="startChat('hermione')">
+        <div class="msg-profile-img">📚</div>
+        <div class="msg-chat-info">
+          <div class="msg-chat-name">Hermione Granger</div>
+          <div class="msg-chat-snippet" id="snippet_hermione">Udah makan belum?</div>
         </div>
       </div>
-      <div class="kakao-chat-item" onclick="startChat('draco')">
-        <div class="kakao-profile-img" style="background:#27ae60; color:#fff;">🐍</div>
-        <div class="kakao-chat-info">
-          <div class="kakao-chat-name">Draco Malfoy</div>
-          <div class="kakao-chat-snippet" id="snippet_draco">Ngapain sih lu...</div>
+      <div class="msg-chat-item" onclick="startChat('draco')">
+        <div class="msg-profile-img">🐍</div>
+        <div class="msg-chat-info">
+          <div class="msg-chat-name">Draco Malfoy</div>
+          <div class="msg-chat-snippet" id="snippet_draco">Ngapain sih lu...</div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- KakaoTalk Chat Room -->
-  <section class="screen" id="kakaoRoomScreen">
-    <div class="app-header" style="background:#fee500; color:#191919;">
-      <button class="back-btn" onclick="openApp('kakaoList')" style="color:#191919;">‹ Chats</button>
-      <h2 id="kakaoChatTitle" style="color:#191919; font-weight:700;">Chat</h2>
+  <!-- Messages Chat Room -->
+  <section class="screen" id="msgRoomScreen">
+    <div class="app-header">
+      <button class="back-btn" onclick="openApp('msgList')">‹ Chats</button>
+      <h2 id="msgChatTitle">Chat</h2>
       <div style="width:40px"></div>
     </div>
-    <div class="kakao-bg">
-      <div class="kakao-messages" id="kakaoMessages"></div>
-      <form class="kakao-input-area" id="kakaoForm">
-        <input type="text" id="kakaoInput" placeholder="Kirim pesan (KakaoTalk)..." autocomplete="off" required>
-        <button class="kakao-send-btn" type="submit">➤</button>
+    <div class="msg-bg">
+      <div class="msg-messages" id="msgMessages"></div>
+      <form class="msg-input-area" id="msgForm" onsubmit="handleChatSubmit(event)">
+        <input type="text" id="msgInput" placeholder="iMessage..." autocomplete="off" required>
+        <button class="msg-send-btn" type="submit">↑</button>
       </form>
+    </div>
+  </section>
+
+  <!-- Notes App -->
+  <section class="screen" id="notesScreen">
+    <div class="app-header">
+      <button class="back-btn" onclick="goHome()">‹ Home</button>
+      <h2>Notes</h2>
+      <div style="width:40px"></div>
+    </div>
+    <div class="notes-wrap">
+      <textarea id="noteInput" class="notes-input" placeholder="Tulis catatan rahasia atau to-do list di sini..."></textarea>
+      <button class="action-btn" onclick="saveNote()">Simpan Catatan</button>
+      <div class="notes-list" id="notesList"></div>
+    </div>
+  </section>
+
+  <!-- Camera App -->
+  <section class="screen" id="cameraScreen">
+    <div class="app-header" style="background:transparent; position:absolute; width:100%;">
+      <button class="back-btn" onclick="goHome()" style="color:#fff;">‹ Home</button>
+      <h2 style="color:#fff;">Camera</h2>
+      <div style="width:40px"></div>
+    </div>
+    <div class="camera-wrap">
+      <div class="camera-viewfinder">📸<br><span style="font-size:12px; color:var(--text-muted)">Ketuk tombol shutter untuk ambil foto virtual</span></div>
+      <button class="shutter-btn" onclick="takeVirtualPhoto()"></button>
     </div>
   </section>
 
@@ -322,7 +360,7 @@ function unlockPhone() {
   document.getElementById('homeScreen').classList.add('active');
   
   setTimeout(() => {
-    showNotification("KakaoTalk", "Ada pesan baru dari Harry Potter!");
+    showNotification("Messages", "Ada pesan baru dari Harry Potter!");
   }, 2500);
 }
 
@@ -355,14 +393,59 @@ function applyWallpaper() {
   const url = document.getElementById('wallInput').value.trim();
   if(!url) return;
   document.documentElement.style.setProperty('--wallpaper', `url('${url}')`);
-  localStorage.setItem('iphone_kakao_wall', url);
+  localStorage.setItem('iphone_multi_wall', url);
   alert('Wallpaper berhasil diganti!');
 }
-const savedWall = localStorage.getItem('iphone_kakao_wall');
+const savedWall = localStorage.getItem('iphone_multi_wall');
 if(savedWall) document.documentElement.style.setProperty('--wallpaper', `url('${savedWall}')`);
 
+// --- APLIKASI NOTES ---
+let savedNotes = JSON.parse(localStorage.getItem('iphone_notes')) || [];
+const notesList = document.getElementById('notesList');
+
+function renderNotes() {
+  if(!notesList) return;
+  notesList.innerHTML = '';
+  savedNotes.forEach((note, index) => {
+    const div = document.createElement('div');
+    div.className = 'note-item';
+    div.innerHTML = `<span>${note}</span> <button onclick="deleteNote(${index})" style="background:none; border:none; color:#ff3b30; cursor:pointer; font-weight:bold;">×</button>`;
+    notesList.appendChild(div);
+  });
+}
+function saveNote() {
+  const input = document.getElementById('noteInput');
+  const text = input.value.trim();
+  if(!text) return;
+  savedNotes.unshift(text);
+  localStorage.setItem('iphone_notes', JSON.stringify(savedNotes));
+  input.value = '';
+  renderNotes();
+}
+function deleteNote(index) {
+  savedNotes.splice(index, 1);
+  localStorage.setItem('iphone_notes', JSON.stringify(savedNotes));
+  renderNotes();
+}
+renderNotes();
+
+// --- APLIKASI CAMERA ---
+function takeVirtualPhoto() {
+  // Simulasi jepret foto dan masukin ke galeri
+  const samplePhotos = [
+    "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=500&q=80",
+    "https://images.unsplash.com/photo-1514539079130-25950c84af65?auto=format&fit=crop&w=500&q=80"
+  ];
+  const randomPic = samplePhotos[Math.floor(Math.random() * samplePhotos.length)];
+  savedPhotos.unshift(randomPic);
+  localStorage.setItem('iphone_msg_photos', JSON.stringify(savedPhotos));
+  renderPhotos();
+  alert('📸 Foto berhasil diambil dan disimpan ke Gallery!');
+  openApp('gallery');
+}
+
 // --- GALERI FOTO ---
-let savedPhotos = JSON.parse(localStorage.getItem('iphone_kakao_photos')) || [];
+let savedPhotos = JSON.parse(localStorage.getItem('iphone_msg_photos')) || [];
 const photosGrid = document.getElementById('photosGrid');
 
 function renderPhotos() {
@@ -380,7 +463,7 @@ function renderPhotos() {
 }
 function deletePhoto(index) {
   savedPhotos.splice(index, 1);
-  localStorage.setItem('iphone_kakao_photos', JSON.stringify(savedPhotos));
+  localStorage.setItem('iphone_msg_photos', JSON.stringify(savedPhotos));
   renderPhotos();
 }
 const galleryInput = document.getElementById('galleryInput');
@@ -390,7 +473,7 @@ if(galleryInput) {
       const reader = new FileReader();
       reader.onload = (evt) => {
         savedPhotos.unshift(evt.target.result);
-        localStorage.setItem('iphone_kakao_photos', JSON.stringify(savedPhotos));
+        localStorage.setItem('iphone_msg_photos', JSON.stringify(savedPhotos));
         renderPhotos();
       };
       reader.readAsDataURL(file);
@@ -399,12 +482,11 @@ if(galleryInput) {
 }
 renderPhotos();
 
-// --- SISTEM CHAT KAKAOTALK BEBAS (PDKT/RANDOM + AUTO PROACTIVE CHAT) ---
+// --- SISTEM CHAT BEBAS (PDKT/RANDOM + AUTO PROACTIVE CHAT 20 DETIK) ---
 let currentCharacter = '';
 const characterNames = { harry: 'Harry Potter', hermione: 'Hermione Granger', draco: 'Draco Malfoy' };
 let proactiveTimer = null;
 
-// Topik bebas ala PDKT, nanya makan, gabut, dll (Tanpa harus kaku bahas sekolah/sihir!)
 const pdktResponses = {
   harry: [
     "Lagi ngapain lu emangnya? Gabut banget ya wkwk.",
@@ -428,39 +510,37 @@ const pdktResponses = {
 
 function startChat(charKey) {
   currentCharacter = charKey;
-  document.getElementById('kakaoChatTitle').textContent = characterNames[charKey];
-  openApp('kakaoRoom');
+  document.getElementById('msgChatTitle').textContent = characterNames[charKey];
+  openApp('msgRoom');
   
-  // Clear timer proactive sebelumnya
   if(proactiveTimer) clearTimeout(proactiveTimer);
 
-  const messagesDiv = document.getElementById('kakaoMessages');
+  const messagesDiv = document.getElementById('msgMessages');
   messagesDiv.innerHTML = `
-    <div class="kakao-row incoming">
-      <div class="kakao-bubble">Hai! Lagi sibuk apa nih? Tumben nge-chat aku 😊</div>
+    <div class="msg-row incoming">
+      <div class="msg-bubble">Hai! Lagi sibuk apa nih? Tumben nge-chat aku 😊</div>
     </div>
   `;
 }
 
-document.getElementById('kakaoForm').addEventListener('submit', (e) => {
+function handleChatSubmit(e) {
   e.preventDefault();
-  const input = document.getElementById('kakaoInput');
+  const input = document.getElementById('msgInput');
   const text = input.value.trim();
   if(!text) return;
 
-  appendKakaoMsg(text, 'outgoing');
+  appendMsg(text, 'outgoing');
   input.value = '';
 
-  // Clear timer lama tiap user nge-chat baru
   if(proactiveTimer) clearTimeout(proactiveTimer);
 
   const loadingId = 'load_' + Date.now();
-  appendKakaoMsg('Typing...', 'incoming', loadingId);
+  appendMsg('Typing...', 'incoming', loadingId);
 
   setTimeout(() => {
-    document.getElementById(loadingId).remove();
+    const loadingElem = document.getElementById(loadingId);
+    if(loadingElem) loadingElem.remove();
     
-    // Respon pintar fleksibel (Nanya makan, gabut, atau random PDKT)
     const lower = text.toLowerCase();
     let reply = "Wkwk iya juga sih. Terus gimana ceritanya? Cerita dong ke aku.";
 
@@ -476,47 +556,35 @@ document.getElementById('kakaoForm').addEventListener('submit', (e) => {
       reply = "Halo juga! Tumben chat duluan, kangen ya? Hahaha.";
     }
 
-    appendKakaoMsg(reply, 'incoming', '', characterNames[currentCharacter]);
+    appendMsg(reply, 'incoming');
     document.getElementById('snippet_' + currentCharacter).textContent = reply;
 
-    // --- FITUR UTAMA: 20 DETIK KEMUDIAN MEREKA CHAT DULUAN! ---
+    // --- AUTO PROACTIVE CHAT 20 DETIK ---
     proactiveTimer = setTimeout(() => {
       const activeScreen = document.querySelector('.screen.active');
       const pool = pdktResponses[currentCharacter];
       const proactiveMsg = pool[Math.floor(Math.random() * pool.length)];
 
-      // Update snippet di list chat
       document.getElementById('snippet_' + currentCharacter).textContent = proactiveMsg;
 
-      if(activeScreen && activeScreen.id === 'kakaoRoomScreen') {
-        // Kalau user masih di dalam chat room yang sama, langsung masuk bubble chat-nya
-        appendKakaoMsg(proactiveMsg, 'incoming', '', characterNames[currentCharacter]);
+      if(activeScreen && activeScreen.id === 'msgRoomScreen') {
+        appendMsg(proactiveMsg, 'incoming');
       } else {
-        // Kalau user udah keluar/diem di home, munculin notifikasi pop-up ala KakaoTalk!
         showNotification(characterNames[currentCharacter], proactiveMsg);
       }
-    }, 20000); // 20 Detik sesuai request lu!
+    }, 20000);
 
   }, 1000);
-});
+}
 
-function appendKakaoMsg(text, type, customId = '', senderName = '') {
-  const messagesDiv = document.getElementById('kakaoMessages');
+function appendMsg(text, type, customId = '') {
+  const messagesDiv = document.getElementById('msgMessages');
+  if(!messagesDiv) return;
   const row = document.createElement('div');
-  row.className = `kakao-row ${type}`;
+  row.className = `msg-row ${type}`;
   if(customId) row.id = customId;
 
-  let senderHtml = '';
-  if(type === 'incoming' && senderName) {
-    senderHtml = `<div class="kakao-sender">${senderName}</div>`;
-  }
-
-  row.innerHTML = `
-    <div>
-      ${senderHtml}
-      <div class="kakao-bubble">${text}</div>
-    </div>
-  `;
+  row.innerHTML = `<div class="msg-bubble">${text}</div>`;
   messagesDiv.appendChild(row);
   messagesDiv.scrollTop = messagesDiv.scrollHeight;
 }
