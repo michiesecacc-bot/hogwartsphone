@@ -35,21 +35,21 @@ button{cursor:pointer}
 .screen::-webkit-scrollbar{display:none}
 .screen.active{opacity:1;visibility:visible;transform:scale(1);z-index:10}
 
-/* Lock Screen & Slide Up Passcode iOS Style */
+/* Lock Screen & Tap to Open Passcode */
 .lock{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:40px 20px 50px;position:relative;
  background:linear-gradient(rgba(9,12,10,0.1),rgba(12,13,9,0.9)),url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=900&q=85') center/cover;
- overflow:hidden;}
+ overflow:hidden;cursor:pointer;}
  
-.lock-main{display:flex;flex-direction:column;align-items:center;text-align:center;transition:transform .4s ease, opacity .3s ease; width:100%;}
+.lock-main{display:flex;flex-direction:column;align-items:center;text-align:center;width:100%;}
 .crest{width:64px;height:74px;border:1px solid var(--gold);clip-path:polygon(8% 0,92% 0,92% 65%,50% 100%,8% 65%);
  display:grid;place-items:center;background:linear-gradient(145deg,#d3b95733,#13150eaa);font-size:30px;color:var(--gold2);margin-bottom:12px}
 .bigtime{font:300 70px/1 -apple-system,sans-serif;letter-spacing:-2px;margin:5px 0;text-shadow:0 2px 15px #000}
 .lockdate{font-size:13px;color:#eee3c8;font-weight:500}
-.lock-hint{position:absolute;bottom:30px;font-size:12px;letter-spacing:1px;color:var(--gold2);animation:bounceHint 1.5s infinite;cursor:pointer;}
+.lock-hint{position:absolute;bottom:30px;font-size:12px;letter-spacing:1px;color:var(--gold2);animation:bounceHint 1.5s infinite;}
 @keyframes bounceHint{0%,100%{transform:translateY(0);opacity:0.7}50%{transform:translateY(-6px);opacity:1}}
 
-/* Passcode View yang tersembunyi sebelum di-swipe ke atas */
-.passcode-wrapper{position:absolute;inset:0;background:rgba(15,16,12,0.92);backdrop-filter:blur(25px);
+/* Passcode Pad yang muncul mulus dari bawah */
+.passcode-wrapper{position:absolute;inset:0;background:rgba(15,16,12,0.95);backdrop-filter:blur(25px);
  display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;
  transform:translateY(100%);transition:transform .4s cubic-bezier(0.16, 1, 0.3, 1);z-index:20;}
 .passcode-wrapper.show{transform:translateY(0);}
@@ -128,18 +128,18 @@ button{cursor:pointer}
 <div class="phone" aria-label="Hogwarts Phone">
   <div class="status"><span id="statusTime">9:41</span><span>5G ⚡ 100%</span></div>
 
-  <!-- Lock Screen dengan Konsep Swipe/Tarik ke Atas untuk Sandi (PIN: 1811) -->
+  <!-- Lock Screen: Cukup ketuk layar/teks untuk memunculkan sandi (PIN: 1811) -->
   <section class="screen active" id="lockScreen">
-    <div class="lock" id="lockArea">
+    <div class="lock" id="lockArea" onclick="showPasscodePad()">
       <div class="lock-main">
         <div class="crest">🦡</div>
         <div class="bigtime" id="clock">09:41</div>
         <div class="lockdate" id="lockDate">Rabu, 21 Oktober</div>
       </div>
-      <div class="lock-hint" onclick="showPasscodePad()">▲ Geser ke atas / Ketuk untuk buka sandi</div>
+      <div class="lock-hint">▲ Ketuk di sini untuk masukkan sandi</div>
 
-      <!-- Passcode Pad (Muncul setelah di-swipe/ketuk) -->
-      <div class="passcode-wrapper" id="passcodeWrapper">
+      <!-- Passcode Pad (Muncul halus dari bawah saat layar diketuk) -->
+      <div class="passcode-wrapper" id="passcodeWrapper" onclick="event.stopPropagation()">
         <div style="font-size:12px;color:var(--gold2);margin-bottom:14px;letter-spacing:1px;">Masukkan Sandi (1811)</div>
         <div class="passcode-dots">
           <div class="dot" id="dot0"></div>
@@ -320,7 +320,7 @@ function updateClock(){
 }
 updateClock(); setInterval(updateClock,1000);
 
-// Interaksi Geser / Klik untuk memunculkan panel Sandi (PIN: 1811)
+// Sistem PIN Sandi (1811) dengan Trigger Ketuk Layar
 let enteredPin = '';
 const correctPin = '1811';
 
@@ -332,19 +332,9 @@ function showPasscodePad() {
 function hidePasscodePad() {
   playMagicChime();
   enteredPin = '';
-  updateDots();.remove('show');
+  updateDots();
+  document.getElementById('passcodeWrapper').classList.remove('show');
 }
-
-// Deteksi Swipe ke atas di area lock screen HP
-let touchStartY = 0;
-const lockArea = document.getElementById('lockArea');
-lockArea.addEventListener('touchstart', e => { touchStartY = e.touches[0].clientY; });
-lockArea.addEventListener('touchend', e => {
-  let touchEndY = e.changedTouches[0].clientY;
-  if (touchStartY - touchEndY > 40) { // Jika digeser ke atas minimal 40px
-    showPasscodePad();
-  }
-});
 
 function pressPin(digit) {
   playMagicChime();
@@ -379,9 +369,9 @@ function checkPin() {
     unlockPhone();
   } else {
     const wrapper = document.getElementById('passcodeWrapper');
-    wrapper.style.transform = 'translateX(8px)';
-    setTimeout(() => wrapper.style.transform = 'translateX(-8px)', 80);
-    setTimeout(() => wrapper.style.transform = 'translateX(0)', 160);
+    wrapper.style.transform = 'translateY(0) translateX(8px)';
+    setTimeout(() => wrapper.style.transform = 'translateY(0) translateX(-8px)', 80);
+    setTimeout(() => wrapper.style.transform = 'translateY(0) translateX(0)', 160);
     
     enteredPin = '';
     updateDots();
@@ -459,7 +449,7 @@ function fillCards(target,items){
 }
 fillCards('spellList',spells); fillCards('potionList',potions);
 
-// Sifat Karakter & Variasi Balasan Chat yang Natural (Anti-AI Monoton)
+// Sifat Karakter & Variasi Balasan Chat Natural (Anti-AI)
 const characters = {
  harry:{
    name:'Harry Potter', avatar:'⚡', status:'Gryffindor · online',
@@ -536,13 +526,12 @@ document.getElementById('chatForm').addEventListener('submit',e=>{
  chatHistory[currentCharacter].push({kind:'outgoing',text:value});
  saveChats(); renderChat(); input.value='';
  
- // Balasan disesuaikan dengan karakter masing-masing (anti-ai kaku)
  setTimeout(()=>{
   const charData = characters[currentCharacter];
   const randomReply = charData.replies[Math.floor(Math.random() * charData.replies.length)];
   chatHistory[currentCharacter].push({kind:'incoming',text:randomReply});
   saveChats();
-  if(currentCharacter===currentCharacter) renderChat();
+  renderChat();
  }, 800);
 });
 
@@ -555,7 +544,6 @@ function addBubble(text,kind){
 function saveChats(){ localStorage.setItem('hogwarts_chats', JSON.stringify(chatHistory)); }
 renderContacts(); selectContact('harry');
 
-// Galeri & Musik
 const savedPhotos = JSON.parse(localStorage.getItem('hogwarts_photos')) || [];
 const photoRoot = document.getElementById('photos');
 
@@ -587,8 +575,8 @@ const vinyl=document.getElementById('vinylDisc');
 audio.addEventListener('play',()=>vinyl.classList.add('spin'));
 audio.addEventListener('pause',()=>vinyl.classList.remove('spin'));
 audio.addEventListener('ended',()=>vinyl.classList.remove('spin'));
-  
-  document.getElementById('audioInput').addEventListener('change',e=>{
+
+document.getElementById('audioInput').addEventListener('change',e=>{
  const file=e.target.files[0]; if(!file)return;
  const url=URL.createObjectURL(file); audio.src=url;
  document.getElementById('trackName').textContent=file.name.replace(/\.[^.]+$/,'');
