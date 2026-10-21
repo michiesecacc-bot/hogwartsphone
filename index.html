@@ -277,10 +277,9 @@ button{cursor:pointer}
     </div>
   </section>
 
-  <!-- WizardFeed Screen (Linimasa & Tombol ke DM) -->
+  <!-- WizardFeed Screen -->
   <section class="screen" id="feedScreen">
-    <div class="sectionhead">
-      <div class="sectionhead-left">
+    <div class="sectionhead-left">
         <button class="back" onclick="goHome()">‹ Beranda</button>
         <div class="kicker">WIZARDFEED</div>
         <h2>Linimasa</h2>
@@ -298,7 +297,7 @@ button{cursor:pointer}
     </div>
   </section>
 
-  <!-- WizardFeed DM List Screen (Daftar Pesan dari Fans & Karakter) -->
+  <!-- WizardFeed DM List Screen -->
   <section class="screen" id="feedDmListScreen">
     <div class="sectionhead">
       <div class="sectionhead-left">
@@ -310,11 +309,11 @@ button{cursor:pointer}
     <div class="dm-list-wrap" id="dmListContainer"></div>
   </section>
 
-  <!-- WizardFeed DM Chat Room Screen (Ruang Chat DM Tertentu) -->
+  <!-- WizardFeed DM Chat Room Screen -->
   <section class="screen" id="feedDmChatScreen">
     <div class="sectionhead">
       <div class="sectionhead-left">
-        <button class="back" onclick="showScreen('feedDmListScreen')">‹ Kembali</button>
+        <button class="back" onclick="openDmList()">‹ Kembali</button>
         <div class="kicker" id="dmChatRole">PENGGEMAR HOGWARTS</div>
         <h2 id="dmChatTitle">Nama Fans</h2>
       </div>
@@ -428,9 +427,8 @@ button{cursor:pointer}
       <h3>KASTIL HOGWARTS BERSINAR DI BAWAH LAUTAN BINTANG</h3>
       <p><b>HOGSMEADE —</b> Para siswa yang kembali dari jalan-jalan malam melaporkan pemandangan spektakuler: jendela kastil memancarkan cahaya keemasan yang hangat.</p>
     </article>
-  </section>
-
-  <!-- Spells Screen -->
+          </section>
+            <!-- Spells Screen -->
   <section class="screen" id="spellsScreen">
     <div class="sectionhead">
       <div class="sectionhead-left">
@@ -489,7 +487,6 @@ function updateClock(){
 }
 updateClock(); setInterval(updateClock,1000);
 
-// Notifikasi Banner
 function showNotification(title, desc, icon = '📜') {
   const banner = document.getElementById('notifBanner');
   document.getElementById('notifTitle').textContent = title;
@@ -504,12 +501,10 @@ function showNotification(title, desc, icon = '📜') {
   }, 4000);
 }
 
-// Simulasi Notifikasi DM Fans Masuk setelah beberapa detik
 setTimeout(() => {
-  showNotification("Pesan DM Baru 💌", "@hogwarts_fangirl mengirimimu pesan langsung: 'Kak, spill dong resep ramuan rahasianya!'");
-}, 7000);
+  showNotification("Pesan DM Baru 💌", "@hogwarts_fangirl mengirimimu pesan langsung!");
+}, 5000);
 
-// Control Center
 function toggleControlCenter() {
   playMagicChime();
   document.getElementById('controlCenter').classList.toggle('show');
@@ -520,7 +515,6 @@ function toggleCC(id) {
   document.getElementById(id).classList.toggle('active');
 }
 
-// Custom Wallpaper
 const savedWallpaper = localStorage.getItem('hogwarts_wallpaper');
 if(savedWallpaper) {
   document.documentElement.style.setProperty('--bg-wallpaper', `url('${savedWallpaper}')`);
@@ -543,7 +537,6 @@ function resetWallpaper() {
   alert('Wallpaper dikembalikan ke default.');
 }
 
-// PIN Sandi (1811)
 let enteredPin = '';
 const correctPin = '1811';
 
@@ -638,7 +631,6 @@ function playMagicChime() {
   } catch(e) {}
 }
 
-// WizardFeed & Fitur DM Fans
 let defaultFeed = [
   {id: 1, author: 'Harry Potter', avatar: '⚡', time: '10m lalu', text: 'Ada yang tau kenapa Snape ngeliatin aku sinis banget hari ini?', replies: [{author: 'Ron Weasley', text: 'Klasik Harry, emang dia sirik aja.'}]},
   {id: 2, author: 'Hermione Granger', avatar: '📚', time: '1j lalu', text: 'Perpustakaan Hogwarts kedatangan buku mantra kuno abad ke-15! ✨', replies: [{author: 'Luna Lovegood', text: 'Kudengar buku itu dijaga peri angin.'}]}
@@ -656,6 +648,7 @@ const citizenReplies = [
 
 function renderFeed() {
   const list = document.getElementById('feedList');
+  if(!list) return;
   list.innerHTML = '';
   feedPosts.forEach(post => {
     const div = document.createElement('div');
@@ -689,6 +682,7 @@ function renderFeed() {
 
 function createPost() {
   const input = document.getElementById('postInput');
+  if(!input) return;
   const text = input.value.trim();
   if(!text) return;
 
@@ -701,7 +695,7 @@ function createPost() {
     time: 'Baru saja',
     text: text,
     replies: []
-  };
+      };
   
   feedPosts.unshift(newPost);
   localStorage.setItem('hogwarts_feed', JSON.stringify(feedPosts));
@@ -722,11 +716,10 @@ function createPost() {
 
 renderFeed();
 
-// Sistem DM Twitter / WizardFeed dengan Fans & Karakter
 let dmConversations = JSON.parse(localStorage.getItem('hogwarts_dm_convs')) || {
   'fan1': { name: '@hogwarts_fangirl', avatar: '💖', role: 'Fans Setia Hufflepuff', messages: [{kind:'incoming', text:'Kak! Sumpah status kakak tadi keren banget! Boleh minta tips ramuan gak? 😭'}] },
-  'fan2': { name: '@slytherin_prince', avatar: '🐍', role: 'Pengagum Rahasia', messages: [{kind:'incoming', text:'Jangan sering-sering senyum di koridor. Banyak yang merhatiin tau... (termasuk aku).'}] },
-  'fan3': { name: '@luna_loves', avatar: '🌙', role: 'Teman & Fans Seni', messages: [{kind:'incoming', text:'Halo! Aku suka caramu nulis cuitan di WizardFeed. Penuh energi positif.'}] }
+  'fan2': { name: '@slytherin_prince', avatar: '🐍', role: 'Pengagum Rahasia', messages: [{kind:'incoming', text:'Jangan sering-sering senyum di koridor. Banyak yang merhatiin tau...'}] },
+  'fan3': { name: '@luna_loves', avatar: '🌙', role: 'Teman & Fans Seni', messages: [{kind:'incoming', text:'Halo! Aku suka caramu nulis cuitan di WizardFeed.'}] }
 };
 
 let currentDmUser = 'fan1';
@@ -734,6 +727,7 @@ let currentDmUser = 'fan1';
 function openDmList() {
   showScreen('feedDmList');
   const container = document.getElementById('dmListContainer');
+  if(!container) return;
   container.innerHTML = '';
   
   Object.entries(dmConversations).forEach(([id, conv]) => {
@@ -755,6 +749,7 @@ function openDmList() {
 function openDmChat(id) {
   currentDmUser = id;
   const conv = dmConversations[id];
+  if(!conv) return;
   document.getElementById('dmChatTitle').textContent = conv.name;
   document.getElementById('dmChatRole').textContent = conv.role;
   showScreen('feedDmChat');
@@ -763,8 +758,10 @@ function openDmChat(id) {
 
 function renderDmChat() {
   const log = document.getElementById('feedDmChatLog');
+  if(!log) return;
   log.innerHTML = '';
   const conv = dmConversations[currentDmUser];
+  if(!conv) return;
   conv.messages.forEach(m => {
     const bubble = document.createElement('div');
     bubble.className = 'bubble ' + m.kind;
@@ -774,37 +771,39 @@ function renderDmChat() {
   log.scrollTop = log.scrollHeight;
 }
 
-document.getElementById('feedDmForm').addEventListener('submit', e => {
-  e.preventDefault();
-  const input = document.getElementById('feedDmInput');
-  const val = input.value.trim();
-  if(!val) return;
+const dmForm = document.getElementById('feedDmForm');
+if(dmForm) {
+  dmForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const input = document.getElementById('feedDmInput');
+    if(!input) return;
+    const val = input.value.trim();
+    if(!val) return;
 
-  playMagicChime();
-  dmConversations[currentDmUser].messages.push({kind: 'outgoing', text: val});
-  localStorage.setItem('hogwarts_dm_convs', JSON.stringify(dmConversations));
-  renderDmChat();
-  input.value = '';
-
-  // Balasan otomatis dari Fans/Karakter setelah 1 detik
-  setTimeout(() => {
-    const fanReplies = [
-      "Aaaaa dibales! Makasih banyak kak! 😭✨",
-      "Wah beneran? Kakak baik banget sih aslinya!",
-      "Aku bakal screenshot chat ini buat dipajang di asrama! 🫶",
-      "Intinya hati-hati ya kak, jangan sampe kecapekan."
-    ];
-    const replyText = fanReplies[Math.floor(Math.random() * fanReplies.length)];
-    dmConversations[currentDmUser].messages.push({kind: 'incoming', text: replyText});
+    playMagicChime();
+    dmConversations[currentDmUser].messages.push({kind: 'outgoing', text: val});
     localStorage.setItem('hogwarts_dm_convs', JSON.stringify(dmConversations));
-    if(screens['feedDmChat'] && document.getElementById('feedDmChatScreen').classList.contains('active')) {
-      renderDmChat();
-    }
-    showNotification("DM Baru 💌", `${dmConversations[currentDmUser].name} membalas pesanmu.`);
-  }, 1200);
-});
+    renderDmChat();
+    input.value = '';
 
-// Spells & Potions
+    setTimeout(() => {
+      const fanReplies = [
+        "Aaaaa dibales! Makasih banyak kak! 😭✨",
+        "Wah beneran? Kakak baik banget sih aslinya!",
+        "Aku bakal screenshot chat ini buat dipajang di asrama! 🫶",
+        "Intinya hati-hati ya kak, jangan sampe kecapekan."
+      ];
+      const replyText = fanReplies[Math.floor(Math.random() * fanReplies.length)];
+      dmConversations[currentDmUser].messages.push({kind: 'incoming', text: replyText});
+      localStorage.setItem('hogwarts_dm_convs', JSON.stringify(dmConversations));
+      if(document.getElementById('feedDmChatScreen').classList.contains('active')) {
+        renderDmChat();
+      }
+      showNotification("DM Baru 💌", `${dmConversations[currentDmUser].name} membalas pesanmu.`);
+    }, 1200);
+  });
+}
+
 const spells=[
  ['Lumos','Menciptakan cahaya di ujung tongkat sihir.'],
  ['Nox','Mematikan cahaya yang dihasilkan oleh mantra Lumos.'],
@@ -812,13 +811,14 @@ const spells=[
  ['Accio','Memanggil objek mendekat ke arah penyihir.'],
  ['Expecto Patronum','Conjures a Patronus pelindung dari Dementor.']
 ];
-const potions=[lam dunia sihir.'],
+const potions=[
+ ['Wiggenweld Potion','Ramuan penyembuh luka dalam dunia sihir.'],
  ['Felix Felicis','Ramuan keberuntungan sementara (liquid luck).'],
  ['Amortentia','Ramuan cinta paling kuat dengan aroma khas kesukaan peminumnya.']
 ];
-
-function fillCards(target,items){
+  function fillCards(target,items){
  const root=document.getElementById(target);
+ if(!root) return;
  items.forEach((item)=>{
   const card=document.createElement('div'); card.className=target==='spellList'?'spell':'recipe';
   const btn=document.createElement('button');
@@ -837,7 +837,6 @@ function fillCards(target,items){
 }
 fillCards('spellList',spells); fillCards('potionList',potions);
 
-// Chat Owl Post
 const characters = {
  harry:{
    name:'Harry Potter', avatar:'⚡', status:'Gryffindor · online',
@@ -868,7 +867,9 @@ Object.keys(characters).forEach(key => {
 });
 
 function renderContacts(){
- const root=document.getElementById('contactList'); root.innerHTML='';
+ const root=document.getElementById('contactList');
+ if(!root) return;
+ root.innerHTML='';
  Object.entries(characters).forEach(([key,c])=>{
   const b=document.createElement('button');
   b.className='contact'+(key===currentCharacter?' active':'');
@@ -880,6 +881,7 @@ function renderContacts(){
 
 function selectContact(key){
  currentCharacter=key; const c=characters[key];
+ if(!c) return;
  document.getElementById('chatAvatar').textContent=c.avatar;
  document.getElementById('chatName').textContent=c.name;
  document.getElementById('chatStatus').textContent=c.status;
@@ -887,41 +889,48 @@ function selectContact(key){
 }
 
 function renderChat(){
- const log=document.getElementById('chatLog'); log.innerHTML='';
+ const log=document.getElementById('chatLog');
+ if(!log) return;
+ log.innerHTML='';
  (chatHistory[currentCharacter]||[]).forEach(m=>addBubble(m.text,m.kind));
  log.scrollTop=log.scrollHeight;
 }
 
-document.getElementById('chatForm').addEventListener('submit',e=>{
- e.preventDefault(); const input=document.getElementById('chatInput'); const value=input.value.trim(); if(!value)return;
- 
- chatHistory[currentCharacter].push({kind:'outgoing',text:value});
- saveChats(); renderChat(); input.value='';
- 
- setTimeout(()=>{
-  const charData = characters[currentCharacter];
-  const randomReply = charData.replies[Math.floor(Math.random() * charData.replies.length)][0];
-  chatHistory[currentCharacter].push({kind:'incoming',text:randomReply});
-  saveChats();
-  renderChat();
-  showNotification("Pesan Baru ✉️", `${charData.name} membalas pesanmu.`);
- }, 800);
-});
+const chatForm = document.getElementById('chatForm');
+if(chatForm) {
+  chatForm.addEventListener('submit',e=>{
+    e.preventDefault(); const input=document.getElementById('chatInput'); if(!input) return;
+    const value=input.value.trim(); if(!value)return;
+    
+    chatHistory[currentCharacter].push({kind:'outgoing',text:value});
+    saveChats(); renderChat(); input.value='';
+    
+    setTimeout(()=>{
+     const charData = characters[currentCharacter];
+     const randomReply = charData.replies[Math.floor(Math.random() * charData.replies.length)][0];
+     chatHistory[currentCharacter].push({kind:'incoming',text:randomReply});
+     saveChats();
+     renderChat();
+     showNotification("Pesan Baru ✉️", `${charData.name} membalas pesanmu.`);
+    }, 800);
+  });
+}
 
 function addBubble(text,kind){
  const bubble=document.createElement('div'); bubble.className='bubble '+kind;
  bubble.textContent = text;
- const log=document.getElementById('chatLog'); log.appendChild(bubble); log.scrollTop=log.scrollHeight;
+ const log=document.getElementById('chatLog'); if(!log) return;
+ log.appendChild(bubble); log.scrollTop=log.scrollHeight;
 }
 
 function saveChats(){ localStorage.setItem('hogwarts_chats', JSON.stringify(chatHistory)); }
 renderContacts(); selectContact('harry');
 
-// Galeri & Musik
 const savedPhotos = JSON.parse(localStorage.getItem('hogwarts_photos')) || [];
 const photoRoot = document.getElementById('photos');
 
 function appendPhotoCard(url, save=true) {
+  if(!photoRoot) return;
   const card=document.createElement('div'); card.className='photo';
   const img=document.createElement('img'); img.src=url;
   card.appendChild(img);
@@ -936,27 +945,34 @@ function appendPhotoCard(url, save=true) {
 }
 savedPhotos.forEach(url=>appendPhotoCard(url,false));
 
-document.getElementById('galleryInput').addEventListener('change',e=>{
- Array.from(e.target.files||[]).forEach(file=>{
-  const reader = new FileReader();
-  reader.onload = evt => appendPhotoCard(evt.target.result, true);
-  reader.readAsDataURL(file);
- });
-});
+const galleryInput = document.getElementById('galleryInput');
+if(galleryInput) {
+  galleryInput.addEventListener('change',e=>{
+    Array.from(e.target.files||[]).forEach(file=>{
+     const reader = new FileReader();
+     reader.onload = evt => appendPhotoCard(evt.target.result, true);
+     reader.readAsDataURL(file);
+    });
+  });
+}
 
 const audio=document.getElementById('audio');
 const vinyl=document.getElementById('vinylDisc');
-audio.addEventListener('play',()=>vinyl.classList.add('spin'));
-audio.addEventListener('pause',()=>vinyl.classList.remove('spin'));
-audio.addEventListener('ended',()=>vinyl.classList.remove('spin'));
+if(audio && vinyl) {
+  audio.addEventListener('play',()=>vinyl.classList.add('spin'));
+  audio.addEventListener('pause',()=>vinyl.classList.remove('spin'));
+  audio.addEventListener('ended',()=>vinyl.classList.remove('spin'));
+}
 
-document.getElementById('audioInput').addEventListener('change',e=>{
- const file=e.target.files[0]; if(!file)return;
- const url=URL.createObjectURL(file); audio.src=url;
- document.getElementById('trackName').textContent=file.name.replace(/\.[^.]+$/,'');
- audio.play().catch(()=>{});
-});
+const audioInput = document.getElementById('audioInput');
+if(audioInput) {
+  audioInput.addEventListener('change',e=>{
+    const file=e.target.files[0]; if(!file)return;
+    const url=URL.createObjectURL(file); audio.src=url;
+    document.getElementById('trackName').textContent=file.name.replace(/\.[^.]+$/,'');
+    audio.play().catch(()=>{});
+  });
+}
 </script>
 </body>
 </html>
- ['Wiggenweld Potion','Ramuan penyembuh luka da
