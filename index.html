@@ -3,30 +3,32 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Virtual Phone | iOS Multi-App Edition</title>
+<title>Hogwarts Virtual Phone | KakaoTalk Saved Edition</title>
 <style>
 :root {
-  --bg-dark: #000000;
-  --panel: rgba(28, 28, 32, 0.85);
+  --bg-dark: #090a0f;
+  --panel: rgba(25, 26, 35, 0.85);
   --glass-border: rgba(255, 255, 255, 0.1);
-  --accent: #0a84ff;
-  --incoming-msg: #262629;
-  --text-main: #ffffff;
-  --text-muted: #8e8e93;
-  --wallpaper: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80');
+  --kakaoyellow: #fee500;
+  --kakao-incoming: #ffffff;
+  --kakotext-dark: #191919;
+  --accent: #d4af37;
+  --text-main: #f3f4f6;
+  --text-muted: #9ca3af;
+  --wallpaper: url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80');
 }
 
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 body {
   margin: 0; min-height: 100vh; display: grid; place-items: center;
-  background: #08080a; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+  background: #050508; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
   color: var(--text-main); overflow: hidden;
 }
 
 /* Bingkai iPhone Pro Max */
 .phone-frame {
   position: relative; width: 390px; height: 810px; max-height: 96vh;
-  background: var(--bg-dark); border: 8px solid #222226; border-radius: 52px;
+  background: var(--bg-dark); border: 8px solid #1c1d25; border-radius: 52px;
   overflow: hidden; box-shadow: 0 40px 90px rgba(0,0,0,0.9), inset 0 0 0 2px rgba(255,255,255,0.12);
   display: flex; flex-direction: column;
 }
@@ -44,29 +46,29 @@ body {
   padding: 12px 28px 0; font-size: 12px; font-weight: 600; color: #fff; z-index: 900;
 }
 
-/* Notifikasi Pop-up Ala iOS */
+/* Notifikasi Pop-up KakaoTalk */
 .notification-banner {
-  position: absolute; top: -80px; left: 16px; right: 16px; background: rgba(35, 35, 40, 0.9);
+  position: absolute; top: -80px; left: 16px; right: 16px; background: rgba(35, 35, 40, 0.95);
   backdrop-filter: blur(25px); border: 1px solid var(--glass-border);
   border-radius: 20px; padding: 12px 16px; display: flex; align-items: center; gap: 12px;
   z-index: 1100; transition: top 0.4s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 10px 30px rgba(0,0,0,0.5);
   cursor: pointer;
 }
 .notification-banner.show { top: 50px; }
-.notif-icon { width: 36px; height: 36px; border-radius: 50%; background: var(--accent); color: #fff; display: grid; place-items: center; font-size: 16px; font-weight: bold; flex-shrink: 0; }
+.notif-icon { width: 36px; height: 36px; border-radius: 50%; background: var(--kakaoyellow); color: #000; display: grid; place-items: center; font-size: 16px; font-weight: bold; flex-shrink: 0; }
 .notif-text { flex: 1; font-size: 12px; color: #fff; line-height: 1.3; }
 .notif-text b { display: block; font-size: 13px; color: #fff; margin-bottom: 2px; }
 
 /* Control Center */
 .control-center {
-  position: absolute; inset: 0; background: rgba(15, 15, 20, 0.85); backdrop-filter: blur(40px);
+  position: absolute; inset: 0; background: rgba(15, 15, 20, 0.88); backdrop-filter: blur(40px);
   z-index: 1050; display: flex; flex-direction: column; padding: 60px 24px 30px; gap: 20px;
   transform: translateY(-100%); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .control-center.show { transform: translateY(0); }
 .cc-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
 .cc-tile { background: rgba(255,255,255,0.08); border: 1px solid var(--glass-border); border-radius: 22px; padding: 18px; display: flex; flex-direction: column; gap: 8px; color: #fff; cursor: pointer; }
-.cc-tile.active { background: var(--accent); color: #fff; }
+.cc-tile.active { background: var(--accent); color: #000; font-weight: bold; }
 .cc-tile span { font-size: 24px; }
 .cc-tile b { font-size: 13px; }
 
@@ -82,25 +84,25 @@ body {
 
 /* Lock Screen */
 .lock-screen {
-  height: 100%; background: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.85)), var(--wallpaper) center/cover;
+  height: 100%; background: linear-gradient(to bottom, rgba(0,0,0,0.25), rgba(9,10,15,0.9)), var(--wallpaper) center/cover;
   display: flex; flex-direction: column; align-items: center; justify-content: space-between;
   padding: 60px 20px 50px; text-align: center; cursor: pointer;
 }
 .lock-time { font-size: 72px; font-weight: 300; letter-spacing: -2px; margin: 0; text-shadow: 0 4px 25px rgba(0,0,0,0.6); }
-.lock-date { font-size: 14px; color: #e5e5ea; font-weight: 500; }
-.lock-hint { font-size: 12px; color: #fff; background: rgba(255,255,255,0.2); backdrop-filter: blur(20px); padding: 10px 24px; border-radius: 30px; }
+.lock-date { font-size: 14px; color: var(--accent); font-weight: 500; }
+.lock-hint { font-size: 12px; color: #fff; background: rgba(212,175,55,0.2); border: 1px solid var(--accent); backdrop-filter: blur(20px); padding: 10px 24px; border-radius: 30px; }
 
-/* Home Screen (Multi-App Grid) */
+/* Home Screen */
 .home-screen {
   height: 100%; padding: 24px 20px; display: flex; flex-direction: column; justify-content: space-between;
-  background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.5)), var(--wallpaper) center/cover fixed;
+  background: linear-gradient(rgba(9,10,15,0.4), rgba(9,10,15,0.8)), var(--wallpaper) center/cover fixed;
 }
 .widget-box {
   background: var(--panel); backdrop-filter: blur(30px); border: 1px solid var(--glass-border);
   border-radius: 24px; padding: 16px 20px; display: flex; align-items: center; gap: 14px; margin-bottom: 24px;
 }
-.widget-avatar { width: 50px; height: 50px; border-radius: 50%; background: #3a3a3c; display: grid; place-items: center; font-size: 22px; }
-.widget-info h3 { margin: 0 0 2px; font-size: 15px; font-weight: 600; }
+.widget-avatar { width: 50px; height: 50px; border-radius: 50%; background: #2a2b38; display: grid; place-items: center; font-size: 22px; border: 1px solid var(--accent); }
+.widget-info h3 { margin: 0 0 2px; font-size: 15px; font-weight: 600; color: var(--accent); }
 .widget-info p { margin: 0; font-size: 11px; color: var(--text-muted); }
 
 .app-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px 12px; }
@@ -112,40 +114,31 @@ body {
 
 /* App Headers */
 .app-header { padding: 16px 20px; background: rgba(20,20,20,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--glass-border); display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 10; }
-.back-btn { background: none; border: none; color: var(--accent); font-weight: 500; font-size: 15px; cursor: pointer; padding: 0; }
+.back-btn { background: none; border: none; color: var(--kakaoyellow); font-weight: 500; font-size: 15px; cursor: pointer; padding: 0; }
 .app-header h2 { font-size: 16px; margin: 0; font-weight: 600; }
 
-/* iMessage UI */
-.msg-bg { background-color: #000000; display: flex; flex-direction: column; height: 100%; }
-.msg-chat-list { padding: 12px; display: flex; flex-direction: column; gap: 8px; background: #000; height: 100%; }
-.msg-chat-item { display: flex; align-items: center; gap: 12px; padding: 10px; border-radius: 14px; cursor: pointer; background: rgba(255,255,255,0.04); border: 1px solid var(--glass-border); }
-.msg-profile-img { width: 48px; height: 48px; border-radius: 50%; background: #3a3a3c; display: grid; place-items: center; font-size: 20px; flex-shrink: 0; }
-.msg-chat-info { flex: 1; }
-.msg-chat-name { font-size: 14px; font-weight: bold; color: #fff; margin-bottom: 3px; }
-.msg-chat-snippet { font-size: 12px; color: var(--text-muted); }
+/* --- KAKAOTALK UI STYLING --- */
+.kakao-bg { background-color: #bac7d3; display: flex; flex-direction: column; height: 100%; }
+.kakao-chat-list { padding: 12px; display: flex; flex-direction: column; gap: 8px; background: #fff; height: 100%; }
+.kakao-chat-item { display: flex; align-items: center; gap: 12px; padding: 10px; border-radius: 12px; cursor: pointer; transition: background 0.15s; }
+.kakao-chat-item:active { background: #f0f0f0; }
+.kakao-profile-img { width: 50px; height: 50px; border-radius: 20px; background: #ddd; display: grid; place-items: center; font-size: 22px; flex-shrink: 0; }
+.kakao-chat-info { flex: 1; border-bottom: 1px solid #f5f5f5; padding-bottom: 8px; }
+.kakao-chat-name { font-size: 14px; font-weight: bold; color: #191919; margin-bottom: 3px; }
+.kakao-chat-snippet { font-size: 12px; color: #8e8e93; }
 
-.msg-messages { flex: 1; padding: 16px; display: flex; flex-direction: column; gap: 10px; overflow-y: auto; }
-.msg-row { display: flex; flex-direction: column; max-width: 80%; }
-.msg-row.incoming { align-self: flex-start; }
-.msg-row.outgoing { align-self: flex-end; }
-.msg-bubble { padding: 10px 16px; border-radius: 18px; font-size: 13px; line-height: 1.4; word-break: break-word; }
-.incoming .msg-bubble { background: var(--incoming-msg); color: #fff; border-bottom-left-radius: 4px; }
-.outgoing .msg-bubble { background: var(--accent); color: #fff; font-weight: 500; border-bottom-right-radius: 4px; }
-.msg-input-area { padding: 12px 16px; background: rgba(20,20,20,0.9); backdrop-filter: blur(20px); border-top: 1px solid var(--glass-border); display: flex; gap: 10px; align-items: center; }
-.msg-input-area input { flex: 1; background: #2c2c2e; border: none; border-radius: 20px; padding: 10px 16px; color: #fff; font-size: 13px; outline: none; }
-.msg-send-btn { background: var(--accent); border: none; border-radius: 50%; width: 36px; height: 36px; display: grid; place-items: center; color: #fff; font-weight: bold; cursor: pointer; }
-
-/* Notes App UI */
-.notes-wrap { padding: 16px; display: flex; flex-direction: column; gap: 12px; height: 100%; background: #000; }
-.notes-input { width: 100%; height: 120px; background: #1c1c1e; border: 1px solid var(--glass-border); border-radius: 14px; padding: 12px; color: #fff; font-size: 13px; resize: none; outline: none; }
-.notes-list { display: flex; flex-direction: column; gap: 8px; overflow-y: auto; flex: 1; }
-.note-item { background: #1c1c1e; padding: 12px; border-radius: 12px; font-size: 12px; color: #f2f2f7; border: 1px solid var(--glass-border); display: flex; justify-content: space-between; align-items: flex-start; }
-
-/* Camera App UI */
-.camera-wrap { height: 100%; background: #111; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 40px 20px; text-align: center; }
-.camera-viewfinder { width: 100%; flex: 1; border-radius: 24px; background: #222; border: 1px solid var(--glass-border); display: grid; place-items: center; font-size: 40px; margin-bottom: 20px; position: relative; overflow: hidden; }
-.shutter-btn { width: 70px; height: 70px; border-radius: 50%; background: #fff; border: 4px solid #ccc; cursor: pointer; transition: transform 0.1s; }
-.shutter-btn:active { transform: scale(0.9); }
+/* KakaoTalk Room */
+.kakao-messages { flex: 1; padding: 16px; display: flex; flex-direction: column; gap: 10px; overflow-y: auto; }
+.kakao-row { display: flex; align-items: flex-start; gap: 8px; max-width: 80%; }
+.kakao-row.incoming { align-self: flex-start; }
+.kakao-row.outgoing { align-self: flex-end; flex-direction: row-reverse; }
+.kakao-bubble { padding: 10px 14px; border-radius: 14px; font-size: 13px; line-height: 1.4; word-break: break-word; }
+.incoming .kakao-bubble { background: var(--kakao-incoming); color: var(--kakotext-dark); border-top-left-radius: 2px; box-shadow: 0 1px 2px rgba(0,0,0,0.08); }
+.outgoing .kakao-bubble { background: var(--kakaoyellow); color: var(--kakotext-dark); border-top-right-radius: 2px; box-shadow: 0 1px 2px rgba(0,0,0,0.08); }
+.kakao-sender { font-size: 11px; color: #444; margin-bottom: 2px; font-weight: 500; }
+.kakao-input-area { padding: 10px 14px; background: #fff; display: flex; gap: 8px; align-items: center; border-top: 1px solid #ddd; }
+.kakao-input-area input { flex: 1; background: #f5f5f5; border: none; border-radius: 20px; padding: 10px 16px; color: #191919; font-size: 13px; outline: none; }
+.kakao-send-btn { background: var(--kakaoyellow); border: none; border-radius: 50%; width: 36px; height: 36px; display: grid; place-items: center; color: #000; font-weight: bold; cursor: pointer; }
 
 /* Gallery App */
 .gallery-wrap { padding: 16px; display: flex; flex-direction: column; gap: 14px; background: #000; height: 100%; }
@@ -158,10 +151,10 @@ body {
 
 /* Settings */
 .settings-card { background: var(--panel); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: 20px; padding: 18px; margin: 16px; }
-.settings-card h3 { font-size: 14px; color: #fff; margin: 0 0 6px; }
+.settings-card h3 { font-size: 14px; color: var(--accent); margin: 0 0 6px; }
 .settings-card p { font-size: 12px; color: var(--text-muted); margin: 0 0 12px; }
 .settings-card input { width: 100%; background: #2c2c2e; border: none; border-radius: 10px; padding: 10px 12px; color: #fff; font-size: 12px; margin-bottom: 10px; outline: none; }
-.action-btn { background: var(--accent); border: none; border-radius: 12px; padding: 10px 18px; font-size: 12px; font-weight: 600; color: #fff; cursor: pointer; }
+.action-btn { background: var(--accent); border: none; border-radius: 12px; padding: 10px 18px; font-size: 12px; font-weight: 600; color: #000; cursor: pointer; }
 </style>
 </head>
 <body>
@@ -170,27 +163,27 @@ body {
   <!-- Status Bar -->
   <div class="status-bar" onclick="toggleControlCenter()" style="cursor:pointer;">
     <span id="statusBarTime">09:41</span>
-    <span style="font-size:10px; opacity:0.6;">▼ Control Center</span>
-    <span>5G 🔋 100%</span>
+    <span style="font-size:10px; color:var(--accent);">▼ Hogwarts Network</span>
+    <span>5G ⚡ 100%</span>
   </div>
 
-  <!-- Notifikasi Pop-up Ala iOS -->
-  <div class="notification-banner" id="notifBanner" onclick="openApp('msgList')">
-    <div class="notif-icon">💬</div>
+  <!-- Notifikasi Pop-up KakaoTalk -->
+  <div class="notification-banner" id="notifBanner" onclick="openApp('kakaoList')">
+    <div class="notif-icon">⚡</div>
     <div class="notif-text">
-      <b id="notifTitle">Messages</b>
+      <b id="notifTitle">KakaoTalk Hogwarts</b>
       <span id="notifDesc">Ada pesan baru dari Harry!</span>
     </div>
   </div>
 
   <!-- Control Center -->
   <div class="control-center" id="controlCenter">
-    <div style="font-size:18px; font-weight:bold; color:#fff; text-align:center; margin-bottom:10px;">Control Center</div>
+    <div style="font-size:18px; font-weight:bold; color:var(--accent); text-align:center; margin-bottom:10px;">Hogwarts Control Center</div>
     <div class="cc-grid">
-      <div class="cc-tile active" id="ccWifi" onclick="toggleCC('ccWifi')"><span>📶</span><b>Wi-Fi</b></div>
-      <div class="cc-tile active" id="ccSilent" onclick="toggleCC('ccSilent')"><span>🌙</span><b>Do Not Disturb</b></div>
-      <div class="cc-tile active" id="ccBluetooth" onclick="toggleCC('ccBluetooth')"><span>🎧</span><b>AirPods Pro</b></div>
-      <div class="cc-tile" onclick="toggleControlCenter(); openApp('settings')"><span>⚙️</span><b>Settings</b></div>
+      <div class="cc-tile active" id="ccWifi" onclick="toggleCC('ccWifi')"><span>📶</span><b>Wi-Fi Asrama</b></div>
+      <div class="cc-tile active" id="ccSilent" onclick="toggleCC('ccSilent')"><span>🌙</span><b>Mode Mantra Senyap</b></div>
+      <div class="cc-tile active" id="ccBluetooth" onclick="toggleCC('ccBluetooth')"><span>🎧</span><b>AirPods Sihir</b></div>
+      <div class="cc-tile" onclick="toggleControlCenter(); openApp('settings')"><span>⚙️</span><b>Settings HP</b></div>
     </div>
     <button class="action-btn" style="margin-top:auto;" onclick="toggleControlCenter()">Tutup</button>
   </div>
@@ -202,112 +195,82 @@ body {
         <h1 class="lock-time" id="lockTime">09:41</h1>
         <div class="lock-date" id="lockDate">Rabu, 21 Oktober</div>
       </div>
-      <div class="lock-hint">Tap to open phone ✨</div>
+      <div class="lock-hint">Ketuk untuk Membuka Hogwarts Phone ✨</div>
     </div>
   </section>
 
-  <!-- Home Screen (Multi-App) -->
+  <!-- Home Screen -->
   <section class="screen" id="homeScreen">
     <div class="home-screen">
       <div>
         <div class="widget-box">
           <div class="widget-avatar">⚡</div>
           <div class="widget-info">
-            <h3>Virtual Space</h3>
-            <p>iOS 19 • Fully Functional</p>
+            <h3>Hogwarts Space</h3>
+            <p>Hufflepuff Common Room • Online</p>
           </div>
         </div>
 
         <div class="app-grid">
-          <button class="app-item" onclick="openApp('msgList')"><div class="app-icon">💬</div>Messages</button>
-          <button class="app-item" onclick="openApp('notes')"><div class="app-icon" style="background:#f1c40f; color:#000;">📝</div>Notes</button>
-          <button class="app-item" onclick="openApp('camera')"><div class="app-icon" style="background:#34495e;">📷</div>Camera</button>
+          <button class="app-item" onclick="openApp('kakaoList')"><div class="app-icon" style="background:#fee500; color:#000;">💬</div>KakaoTalk</button>
           <button class="app-item" onclick="openApp('gallery')"><div class="app-icon">🖼️</div>Gallery</button>
           <button class="app-item" onclick="openApp('settings')"><div class="app-icon">⚙️</div>Settings</button>
         </div>
       </div>
 
       <div class="dock">
-        <button class="app-item" onclick="openApp('msgList')"><div class="app-icon" style="width:54px; height:54px; border-radius:16px; display:grid; place-items:center;">💬</div></button>
-        <button class="app-item" onclick="openApp('notes')"><div class="app-icon" style="background:#f1c40f; color:#000; width:54px; height:54px; border-radius:16px; display:grid; place-items:center;">📝</div></button>
-        <button class="app-item" onclick="openApp('camera')"><div class="app-icon" style="background:#34495e; width:54px; height:54px; border-radius:16px; display:grid; place-items:center;">📷</div></button>
+        <button class="app-item" onclick="openApp('kakaoList')"><div class="app-icon" style="background:#fee500; color:#000; width:54px; height:54px; border-radius:16px; display:grid; place-items:center;">💬</div></button>
+        <button class="app-item" onclick="openApp('gallery')"><div class="app-icon" style="width:54px; height:54px; border-radius:16px; display:grid; place-items:center;">🖼️</div></button>
         <button class="app-item" onclick="openApp('settings')"><div class="app-icon" style="width:54px; height:54px; border-radius:16px; display:grid; place-items:center;">⚙️</div></button>
       </div>
     </div>
   </section>
 
-  <!-- Messages Chat List App -->
-  <section class="screen" id="msgListScreen">
-    <div class="app-header">
-      <button class="back-btn" onclick="goHome()">‹ Home</button>
-      <h2>Messages</h2>
+  <!-- KakaoTalk Chat List -->
+  <section class="screen" id="kakaoListScreen">
+    <div class="app-header" style="background:#fee500; color:#191919;">
+      <button class="back-btn" onclick="goHome()" style="color:#191919;">‹ Home</button>
+      <h2 style="color:#191919; font-weight:700;">KakaoTalk</h2>
       <div style="width:40px"></div>
     </div>
-    <div class="msg-chat-list">
-      <div class="msg-chat-item" onclick="startChat('harry')">
-        <div class="msg-profile-img">⚡</div>
-        <div class="msg-chat-info">
-          <div class="msg-chat-name">Harry Potter</div>
-          <div class="msg-chat-snippet" id="snippet_harry">Lagi ngapain lu?</div>
+    <div class="kakao-chat-list">
+      <div class="kakao-chat-item" onclick="startChat('harry')">
+        <div class="kakao-profile-img" style="background:#4a90e2; color:#fff;">⚡</div>
+        <div class="kakao-chat-info">
+          <div class="kakao-chat-name">Harry Potter (Gryffindor)</div>
+          <div class="kakao-chat-snippet" id="snippet_harry">Lagi ngapain lu?</div>
         </div>
       </div>
-      <div class="msg-chat-item" onclick="startChat('hermione')">
-        <div class="msg-profile-img">📚</div>
-        <div class="msg-chat-info">
-          <div class="msg-chat-name">Hermione Granger</div>
-          <div class="msg-chat-snippet" id="snippet_hermione">Udah makan belum?</div>
+      <div class="kakao-chat-item" onclick="startChat('hermione')">
+        <div class="kakao-profile-img" style="background:#e74c3c; color:#fff;">📚</div>
+        <div class="kakao-chat-info">
+          <div class="kakao-chat-name">Hermione Granger (Gryffindor)</div>
+          <div class="kakao-chat-snippet" id="snippet_hermione">Udah makan belum?</div>
         </div>
       </div>
-      <div class="msg-chat-item" onclick="startChat('draco')">
-        <div class="msg-profile-img">🐍</div>
-        <div class="msg-chat-info">
-          <div class="msg-chat-name">Draco Malfoy</div>
-          <div class="msg-chat-snippet" id="snippet_draco">Ngapain sih lu...</div>
+      <div class="kakao-chat-item" onclick="startChat('draco')">
+        <div class="kakao-profile-img" style="background:#27ae60; color:#fff;">🐍</div>
+        <div class="kakao-chat-info">
+          <div class="kakao-chat-name">Draco Malfoy (Slytherin)</div>
+          <div class="kakao-chat-snippet" id="snippet_draco">Ngapain sih lu...</div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Messages Chat Room -->
-  <section class="screen" id="msgRoomScreen">
-    <div class="app-header">
-      <button class="back-btn" onclick="openApp('msgList')">‹ Chats</button>
-      <h2 id="msgChatTitle">Chat</h2>
-      <div style="width:40px"></div>
+  <!-- KakaoTalk Chat Room -->
+  <section class="screen" id="kakaoRoomScreen">
+    <div class="app-header" style="background:#fee500; color:#191919;">
+      <button class="back-btn" onclick="openApp('kakaoList')" style="color:#191919;">‹ Chats</button>
+      <h2 id="kakaoChatTitle" style="color:#191919; font-weight:700;">Chat</h2>
+      <button onclick="clearChatHistory()" style="background:none; border:none; color:#c0392b; font-size:12px; font-weight:bold; cursor:pointer;">Reset</button>
     </div>
-    <div class="msg-bg">
-      <div class="msg-messages" id="msgMessages"></div>
-      <form class="msg-input-area" id="msgForm" onsubmit="handleChatSubmit(event)">
-        <input type="text" id="msgInput" placeholder="iMessage..." autocomplete="off" required>
-        <button class="msg-send-btn" type="submit">↑</button>
+    <div class="kakao-bg">
+      <div class="kakao-messages" id="kakaoMessages"></div>
+      <form class="kakao-input-area" id="kakaoForm" onsubmit="handleChatSubmit(event)">
+        <input type="text" id="kakaoInput" placeholder="Kirim pesan (KakaoTalk)..." autocomplete="off" required>
+        <button class="kakao-send-btn" type="submit">➤</button>
       </form>
-    </div>
-  </section>
-
-  <!-- Notes App -->
-  <section class="screen" id="notesScreen">
-    <div class="app-header">
-      <button class="back-btn" onclick="goHome()">‹ Home</button>
-      <h2>Notes</h2>
-      <div style="width:40px"></div>
-    </div>
-    <div class="notes-wrap">
-      <textarea id="noteInput" class="notes-input" placeholder="Tulis catatan rahasia atau to-do list di sini..."></textarea>
-      <button class="action-btn" onclick="saveNote()">Simpan Catatan</button>
-      <div class="notes-list" id="notesList"></div>
-    </div>
-  </section>
-
-  <!-- Camera App -->
-  <section class="screen" id="cameraScreen">
-    <div class="app-header" style="background:transparent; position:absolute; width:100%;">
-      <button class="back-btn" onclick="goHome()" style="color:#fff;">‹ Home</button>
-      <h2 style="color:#fff;">Camera</h2>
-      <div style="width:40px"></div>
-    </div>
-    <div class="camera-wrap">
-      <div class="camera-viewfinder">📸<br><span style="font-size:12px; color:var(--text-muted)">Ketuk tombol shutter untuk ambil foto virtual</span></div>
-      <button class="shutter-btn" onclick="takeVirtualPhoto()"></button>
     </div>
   </section>
 
@@ -320,7 +283,7 @@ body {
     </div>
     <div class="gallery-wrap">
       <label class="upload-btn-label">
-        ＋ Upload Foto Baru
+        ＋ Upload Foto Kenangan
         <input type="file" id="galleryInput" accept="image/*" multiple>
       </label>
       <div class="photos-grid" id="photosGrid"></div>
@@ -336,7 +299,7 @@ body {
     </div>
     <div class="settings-card">
       <h3>Custom Wallpaper URL</h3>
-      <p>Masukin link gambar dari internet buat ganti wallpaper iPhone lu.</p>
+      <p>Masukin link gambar dari internet buat ganti wallpaper Hogwarts.</p>
       <input type="text" id="wallInput" placeholder="https://link-gambar.jpg">
       <button class="action-btn" onclick="applyWallpaper()">Apply Wallpaper</button>
     </div>
@@ -360,7 +323,7 @@ function unlockPhone() {
   document.getElementById('homeScreen').classList.add('active');
   
   setTimeout(() => {
-    showNotification("Messages", "Ada pesan baru dari Harry Potter!");
+    showNotification("KakaoTalk Hogwarts", "Ada pesan baru dari Harry Potter!");
   }, 2500);
 }
 
@@ -393,59 +356,14 @@ function applyWallpaper() {
   const url = document.getElementById('wallInput').value.trim();
   if(!url) return;
   document.documentElement.style.setProperty('--wallpaper', `url('${url}')`);
-  localStorage.setItem('iphone_multi_wall', url);
+  localStorage.setItem('hogwarts_kakao_wall', url);
   alert('Wallpaper berhasil diganti!');
 }
-const savedWall = localStorage.getItem('iphone_multi_wall');
+const savedWall = localStorage.getItem('hogwarts_kakao_wall');
 if(savedWall) document.documentElement.style.setProperty('--wallpaper', `url('${savedWall}')`);
 
-// --- APLIKASI NOTES ---
-let savedNotes = JSON.parse(localStorage.getItem('iphone_notes')) || [];
-const notesList = document.getElementById('notesList');
-
-function renderNotes() {
-  if(!notesList) return;
-  notesList.innerHTML = '';
-  savedNotes.forEach((note, index) => {
-    const div = document.createElement('div');
-    div.className = 'note-item';
-    div.innerHTML = `<span>${note}</span> <button onclick="deleteNote(${index})" style="background:none; border:none; color:#ff3b30; cursor:pointer; font-weight:bold;">×</button>`;
-    notesList.appendChild(div);
-  });
-}
-function saveNote() {
-  const input = document.getElementById('noteInput');
-  const text = input.value.trim();
-  if(!text) return;
-  savedNotes.unshift(text);
-  localStorage.setItem('iphone_notes', JSON.stringify(savedNotes));
-  input.value = '';
-  renderNotes();
-}
-function deleteNote(index) {
-  savedNotes.splice(index, 1);
-  localStorage.setItem('iphone_notes', JSON.stringify(savedNotes));
-  renderNotes();
-}
-renderNotes();
-
-// --- APLIKASI CAMERA ---
-function takeVirtualPhoto() {
-  // Simulasi jepret foto dan masukin ke galeri
-  const samplePhotos = [
-    "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=500&q=80",
-    "https://images.unsplash.com/photo-1514539079130-25950c84af65?auto=format&fit=crop&w=500&q=80"
-  ];
-  const randomPic = samplePhotos[Math.floor(Math.random() * samplePhotos.length)];
-  savedPhotos.unshift(randomPic);
-  localStorage.setItem('iphone_msg_photos', JSON.stringify(savedPhotos));
-  renderPhotos();
-  alert('📸 Foto berhasil diambil dan disimpan ke Gallery!');
-  openApp('gallery');
-}
-
 // --- GALERI FOTO ---
-let savedPhotos = JSON.parse(localStorage.getItem('iphone_msg_photos')) || [];
+let savedPhotos = JSON.parse(localStorage.getItem('hogwarts_kakao_photos')) || [];
 const photosGrid = document.getElementById('photosGrid');
 
 function renderPhotos() {
@@ -463,7 +381,7 @@ function renderPhotos() {
 }
 function deletePhoto(index) {
   savedPhotos.splice(index, 1);
-  localStorage.setItem('iphone_msg_photos', JSON.stringify(savedPhotos));
+  localStorage.setItem('hogwarts_kakao_photos', JSON.stringify(savedPhotos));
   renderPhotos();
 }
 const galleryInput = document.getElementById('galleryInput');
@@ -473,7 +391,7 @@ if(galleryInput) {
       const reader = new FileReader();
       reader.onload = (evt) => {
         savedPhotos.unshift(evt.target.result);
-        localStorage.setItem('iphone_msg_photos', JSON.stringify(savedPhotos));
+        localStorage.setItem('hogwarts_kakao_photos', JSON.stringify(savedPhotos));
         renderPhotos();
       };
       reader.readAsDataURL(file);
@@ -482,7 +400,7 @@ if(galleryInput) {
 }
 renderPhotos();
 
-// --- SISTEM CHAT BEBAS (PDKT/RANDOM + AUTO PROACTIVE CHAT 20 DETIK) ---
+// --- SISTEM CHAT KAKAOTALK (DENGAN PENYIMPANAN LOCALSTORAGE) ---
 let currentCharacter = '';
 const characterNames = { harry: 'Harry Potter', hermione: 'Hermione Granger', draco: 'Draco Malfoy' };
 let proactiveTimer = null;
@@ -492,50 +410,103 @@ const pdktResponses = {
     "Lagi ngapain lu emangnya? Gabut banget ya wkwk.",
     "Eh, lu udah makan belum? Jangan telat makan mulu nanti sakit.",
     "Sumpah dari tadi aku mikirin lu mulu (eh canda wkwk). Lagi sibuk apa?",
-    "Temenin aku ngobrol dong, bosen banget nih sendirian."
+    "Temenin aku ngobrol dong, bosen banget nih sendirian di asrama."
   ],
   hermione: [
-    "Lu udah makan belum? Jangan begadang mulu ya.",
+    "Lu udah makan belum? Jangan begadang mulu di perpus.",
     "Lagi ngapain sih? Serius banget kelihatannya dari sini wkwk.",
     "Gabut ya? Makanya cari kesibukan, jangan nge-chat aku mulu (tapi seru sih dichat kamu haha).",
-    "Eh, menurutmu cuaca hari ini enak buat jalan-jalan gak?"
+    "Eh, menurutmu cuaca hari ini enak buat jalan-jalan keliling Hogwarts gak?"
   ],
   draco: [
     "Lagi apa lu? Jangan bilang lagi mikirin aku wkwk.",
     "Udah makan belom? Ntar sakit, aku kan yang repot (canda doang elah).",
     "Gabut banget ya nyariin aku mulu? Hahaha.",
-    "Lagi santai nih, temenin ngobrol sebentar lah."
+    "Lagi santai nih di common room Slytherin, temenin ngobrol sebentar lah."
   ]
 };
 
+// Ambil riwayat chat dari localStorage atau buat default
+function getChatHistory(charKey) {
+  const history = localStorage.getItem('chat_history_' + charKey);
+  if (history) {
+    return JSON.parse(history);
+  }
+  return [
+    { text: "Hai! Lagi sibuk apa nih? Tumben nge-chat aku 😊", type: "incoming", sender: characterNames[charKey] }
+  ];
+}
+
+function saveChatHistory(charKey, messages) {
+  localStorage.setItem('chat_history_' + charKey, JSON.stringify(messages));
+}
+
 function startChat(charKey) {
   currentCharacter = charKey;
-  document.getElementById('msgChatTitle').textContent = characterNames[charKey];
-  openApp('msgRoom');
+  document.getElementById('kakaoChatTitle').textContent = characterNames[charKey];
+  openApp('kakaoRoom');
   
   if(proactiveTimer) clearTimeout(proactiveTimer);
+  renderChatMessages();
+}
 
-  const messagesDiv = document.getElementById('msgMessages');
-  messagesDiv.innerHTML = `
-    <div class="msg-row incoming">
-      <div class="msg-bubble">Hai! Lagi sibuk apa nih? Tumben nge-chat aku 😊</div>
-    </div>
-  `;
+function renderChatMessages() {
+  const messagesDiv = document.getElementById('kakaoMessages');
+  if(!messagesDiv) return;
+  messagesDiv.innerHTML = '';
+  
+  const history = getChatHistory(currentCharacter);
+  history.forEach(msg => {
+    const row = document.createElement('div');
+    row.className = `kakao-row ${msg.type}`;
+    
+    let senderHtml = '';
+    if(msg.type === 'incoming' && msg.sender) {
+      senderHtml = `<div class="kakao-sender">${msg.sender}</div>`;
+    }
+
+    row.innerHTML = `
+      <div>
+        ${senderHtml}
+        <div class="kakao-bubble">${msg.text}</div>
+      </div>
+    `;
+    messagesDiv.appendChild(row);
+  });
+  messagesDiv.scrollTop = messagesDiv.scrollHeight;
+}
+
+function clearChatHistory() {
+  if(confirm("Reset riwayat chat dengan karakter ini?")) {
+    localStorage.removeItem('chat_history_' + currentCharacter);
+    startChat(currentCharacter);
+  }
 }
 
 function handleChatSubmit(e) {
   e.preventDefault();
-  const input = document.getElementById('msgInput');
+  const input = document.getElementById('kakaoInput');
   const text = input.value.trim();
   if(!text) return;
 
-  appendMsg(text, 'outgoing');
+  // Simpan pesan user
+  let history = getChatHistory(currentCharacter);
+  history.push({ text: text, type: 'outgoing', sender: '' });
+  saveChatHistory(currentCharacter, history);
+  renderChatMessages();
   input.value = '';
 
   if(proactiveTimer) clearTimeout(proactiveTimer);
 
+  // Tampilkan loading typing sebentar
   const loadingId = 'load_' + Date.now();
-  appendMsg('Typing...', 'incoming', loadingId);
+  const messagesDiv = document.getElementById('kakaoMessages');
+  const loadRow = document.createElement('div');
+  loadRow.className = 'kakao-row incoming';
+  loadRow.id = loadingId;
+  loadRow.innerHTML = `<div><div class="kakao-bubble">Typing...</div></div>`;
+  messagesDiv.appendChild(loadRow);
+  messagesDiv.scrollTop = messagesDiv.scrollHeight;
 
   setTimeout(() => {
     const loadingElem = document.getElementById(loadingId);
@@ -556,7 +527,12 @@ function handleChatSubmit(e) {
       reply = "Halo juga! Tumben chat duluan, kangen ya? Hahaha.";
     }
 
-    appendMsg(reply, 'incoming');
+    // Simpan balasan AI
+    history = getChatHistory(currentCharacter);
+    history.push({ text: reply, type: 'incoming', sender: characterNames[currentCharacter] });
+    saveChatHistory(currentCharacter, history);
+    renderChatMessages();
+    
     document.getElementById('snippet_' + currentCharacter).textContent = reply;
 
     // --- AUTO PROACTIVE CHAT 20 DETIK ---
@@ -565,28 +541,20 @@ function handleChatSubmit(e) {
       const pool = pdktResponses[currentCharacter];
       const proactiveMsg = pool[Math.floor(Math.random() * pool.length)];
 
+      let currentHist = getChatHistory(currentCharacter);
+      currentHist.push({ text: proactiveMsg, type: 'incoming', sender: characterNames[currentCharacter] });
+      saveChatHistory(currentCharacter, currentHist);
+
       document.getElementById('snippet_' + currentCharacter).textContent = proactiveMsg;
 
-      if(activeScreen && activeScreen.id === 'msgRoomScreen') {
-        appendMsg(proactiveMsg, 'incoming');
+      if(activeScreen && activeScreen.id === 'kakaoRoomScreen' && currentCharacter) {
+        renderChatMessages();
       } else {
         showNotification(characterNames[currentCharacter], proactiveMsg);
       }
     }, 20000);
 
   }, 1000);
-}
-
-function appendMsg(text, type, customId = '') {
-  const messagesDiv = document.getElementById('msgMessages');
-  if(!messagesDiv) return;
-  const row = document.createElement('div');
-  row.className = `msg-row ${type}`;
-  if(customId) row.id = customId;
-
-  row.innerHTML = `<div class="msg-bubble">${text}</div>`;
-  messagesDiv.appendChild(row);
-  messagesDiv.scrollTop = messagesDiv.scrollHeight;
 }
 </script>
 </body>
