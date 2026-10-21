@@ -9,25 +9,47 @@
 :root{
   --gold:#d7b75d;--gold2:#f1d98b;--ink:#171813;--panel:#202119;
   --panel2:#2b2b20;--paper:#e9ddbd;--muted:#bcb69f;--line:#665a36;
+  --bg-wallpaper:url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80');
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 body{margin:0;min-height:100vh;display:grid;place-items:center;padding:14px;
  background:radial-gradient(ellipse at 50% 15%,#464431 0,#202119 45%,#0c0d0a 100%);
  color:#f6f0dc;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",Georgia,sans-serif;}
-button,input{font:inherit}
+button,input,textarea{font:inherit}
 button{cursor:pointer}
 
 .phone{position:relative;width:min(390px,100%);height:min(820px,94dvh);min-height:570px;
  border:10px solid #2e2c24;border-radius:48px;overflow:hidden;background:var(--ink);
  box-shadow:0 30px 80px #000c,0 0 0 2px #d7bd6b33;display:flex;flex-direction:column}
 
-/* Dynamic Island ala iOS */
-.phone:before{content:"";position:absolute;z-index:99;top:11px;left:50%;transform:translateX(-50%);
- width:110px;height:28px;background:#000;border-radius:20px;pointer-events:none;
+/* Dynamic Island */
+.phone:before{content:"";position:absolute;z-index:100;top:11px;left:50%;transform:translateX(-50%);
+ width:110px;height:28px;background:#000;border-radius:20px;pointer-events:all;cursor:pointer;
  box-shadow:0 2px 5px rgba(0,0,0,0.5)}
 
 .status{height:38px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;
  padding:10px 24px 0;font:12px -apple-system,sans-serif;font-weight:600;background:transparent;color:#eee3bf;z-index:90}
+
+/* Notifikasi Banner */
+.notification-banner{position:absolute;top:-70px;left:15px;right:15px;background:rgba(35,36,28,0.95);
+ border:1px solid var(--gold);backdrop-filter:blur(15px);border-radius:18px;padding:12px 16px;
+ display:flex;align-items:center;gap:12px;z-index:200;transition:top .4s cubic-bezier(0.16, 1, 0.3, 1);
+ box-shadow:0 10px 25px rgba(0,0,0,0.5);cursor:pointer;}
+.notification-banner.show{top:45px;}
+.notif-icon{width:36px;height:36px;border-radius:50%;background:var(--gold);color:#19190f;display:grid;place-items:center;font-size:18px;font-weight:bold;flex-shrink:0}
+.notif-text{flex:1;font-size:11px;color:#f4ecd4;line-height:1.4}
+.notif-text b{display:block;color:var(--gold2);font-size:12px}
+
+/* Control Center */
+.control-center{position:absolute;inset:0;background:rgba(15,16,12,0.85);backdrop-filter:blur(30px);
+ z-index:150;display:flex;flex-direction:column;padding:50px 20px 20px;gap:20px;
+ transform:translateY(-100%);transition:transform .4s cubic-bezier(0.16, 1, 0.3, 1);}
+.control-center.show{transform:translateY(0);}
+.cc-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+.cc-tile{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:8px;color:#fff;cursor:pointer;transition:background .2s}
+.cc-tile.active{background:var(--gold);color:#19190f;}
+.cc-tile span{font-size:24px;}
+.cc-tile b{font-size:12px;}
 
 .screen{position:absolute;inset:0;top:38px;display:flex;flex-direction:column;
  background:var(--ink);opacity:0;visibility:hidden;transition:opacity .4s cubic-bezier(0.16, 1, 0.3, 1), transform .4s cubic-bezier(0.16, 1, 0.3, 1);
@@ -35,9 +57,9 @@ button{cursor:pointer}
 .screen::-webkit-scrollbar{display:none}
 .screen.active{opacity:1;visibility:visible;transform:scale(1);z-index:10}
 
-/* Lock Screen & Tap to Open Passcode */
+/* Lock Screen */
 .lock{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:40px 20px 50px;position:relative;
- background:linear-gradient(rgba(9,12,10,0.1),rgba(12,13,9,0.9)),url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=900&q=85') center/cover;
+ background:linear-gradient(rgba(9,12,10,0.1),rgba(12,13,9,0.9)),var(--bg-wallpaper) center/cover;
  overflow:hidden;cursor:pointer;}
  
 .lock-main{display:flex;flex-direction:column;align-items:center;text-align:center;width:100%;}
@@ -48,7 +70,7 @@ button{cursor:pointer}
 .lock-hint{position:absolute;bottom:30px;font-size:12px;letter-spacing:1px;color:var(--gold2);animation:bounceHint 1.5s infinite;}
 @keyframes bounceHint{0%,100%{transform:translateY(0);opacity:0.7}50%{transform:translateY(-6px);opacity:1}}
 
-/* Passcode Pad yang muncul mulus dari bawah */
+/* Passcode Pad */
 .passcode-wrapper{position:absolute;inset:0;background:rgba(15,16,12,0.95);backdrop-filter:blur(25px);
  display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;
  transform:translateY(100%);transition:transform .4s cubic-bezier(0.16, 1, 0.3, 1);z-index:20;}
@@ -64,20 +86,58 @@ button{cursor:pointer}
 
 /* Home Screen & Dock */
 .home{min-height:100%;padding:20px 18px;display:flex;flex-direction:column;justify-content:space-between;
- background:linear-gradient(rgba(17,19,15,0.85),rgba(17,19,15,0.95)),url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80') center/cover fixed}
-.homegrid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px 12px;padding-top:10px}
-.appicon{display:flex;flex-direction:column;align-items:center;gap:6px;background:none;border:0;color:#f4ecd4;font-size:11px;text-shadow:0 1px 3px rgba(0,0,0,0.8)}
-.glyph{width:60px;height:60px;border-radius:14px;display:grid;place-items:center;
- font-size:28px;background:linear-gradient(145deg,#4c4529,#202117);box-shadow:0 6px 15px rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.1);transition:transform .15s}
+ background:linear-gradient(rgba(17,19,15,0.85),rgba(17,19,15,0.95)),var(--bg-wallpaper) center/cover fixed}
+.homegrid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px 10px;padding-top:10px}
+.appicon{display:flex;flex-direction:column;align-items:center;gap:6px;background:none;border:0;color:#f4ecd4;font-size:10px;text-shadow:0 1px 3px rgba(0,0,0,0.8)}
+.glyph{width:56px;height:56px;border-radius:14px;display:grid;place-items:center;
+ font-size:26px;background:linear-gradient(145deg,#4c4529,#202117);box-shadow:0 6px 15px rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.1);transition:transform .15s}
 .appicon:active .glyph{transform:scale(0.88)}
 .dock{background:rgba(40,40,35,0.65);backdrop-filter:blur(20px);border-radius:30px;padding:12px;display:flex;justify-content:space-around;margin-top:auto;border:1px solid rgba(255,255,255,0.08)}
-.dock .glyph{width:52px;height:52px;font-size:24px}
+.dock .glyph{width:50px;height:50px;font-size:22px}
 
-/* App Header & Chat */
-.sectionhead{padding:14px 16px;background:rgba(28,29,22,0.9);backdrop-filter:blur(10px);border-bottom:1px solid #50472e;position:sticky;top:0;z-index:10}
-.sectionhead .kicker{font-size:9px;letter-spacing:2px;color:var(--gold)}
-.sectionhead h2{font-size:20px;font-weight:600;margin:4px 0 2px}
-.back{border:0;background:none;color:var(--gold2);font-size:14px;font-weight:600;padding:0;margin-bottom:6px;display:flex;align-items:center;gap:4px}
+/* App Header */
+.sectionhead{padding:14px 16px;background:rgba(28,29,22,0.9);backdrop-filter:blur(10px);border-bottom:1px solid #50472e;position:sticky;top:0;z-index:10;display:flex;justify-content:space-between;align-items:center}
+.sectionhead-left .kicker{font-size:9px;letter-spacing:2px;color:var(--gold)}
+.sectionhead-left h2{font-size:20px;font-weight:600;margin:4px 0 2px}
+.back{border:0;background:none;color:var(--gold2);font-size:14px;font-weight:600;padding:0;margin-bottom:4px;display:flex;align-items:center;gap:4px}
+.head-action-btn{background:var(--gold);color:#19190f;border:none;border-radius:12px;padding:6px 10px;font-size:11px;font-weight:bold}
+
+/* WizardFeed Style */
+.feed-container{padding:14px;display:flex;flex-direction:column;gap:12px}
+.post-box{background:#202119;border:1px solid #51472e;border-radius:14px;padding:12px;}
+.post-box textarea{width:100%;background:#171813;border:1px solid #4a432d;border-radius:10px;padding:10px;color:#f6f0dc;font-size:12px;resize:none;outline:none;height:65px}
+.post-actions{display:flex;justify-content:flex-end;margin-top:8px}
+.post-btn{background:var(--gold);color:#19190f;border:none;border-radius:16px;padding:6px 14px;font-size:11px;font-weight:bold}
+
+.tweet{background:#24251c;border:1px solid #4a432d;border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:8px}
+.tweet-top{display:flex;gap:10px}
+.tweet-avatar{width:36px;height:36px;border-radius:50%;background:#494127;display:grid;place-items:center;font-size:18px;flex-shrink:0;border:1px solid var(--gold)}
+.tweet-content{flex:1;font-size:12px;line-height:1.4}
+.tweet-header{display:flex;justify-content:space-between;margin-bottom:4px}
+.tweet-author{font-weight:bold;color:var(--gold2)}
+.tweet-time{font-size:10px;color:var(--muted)}
+.tweet-text{color:#f2e7c9;word-break:break-word}
+.replies-box{margin-left:26px;border-left:2px solid #51472e;padding-left:10px;display:flex;flex-direction:column;gap:6px;margin-top:4px}
+.reply-item{font-size:11px;background:#1b1c15;padding:6px 10px;border-radius:8px;color:#e0d6ba}
+.reply-author{color:var(--gold2);font-weight:bold;margin-right:4px}
+
+/* Twitter DM Styles */
+.dm-list-wrap{padding:14px;display:flex;flex-direction:column;gap:10px}
+.dm-conv-item{background:#24251c;border:1px solid #4a432d;border-radius:12px;padding:12px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:background .2s}
+.dm-conv-item:hover{background:#2b2c22}
+.dm-avatar{width:42px;height:42px;border-radius:50%;background:#494127;display:grid;place-items:center;font-size:20px;border:1px solid var(--gold);flex-shrink:0}
+.dm-info{flex:1;font-size:12px}
+.dm-name{font-weight:bold;color:var(--gold2);margin-bottom:3px}
+.dm-snippet{color:var(--muted);font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:200px}
+
+/* Settings */
+.settings-wrap{padding:16px;display:flex;flex-direction:column;gap:14px}
+.setting-card{background:#202119;border:1px solid #51472e;border-radius:14px;padding:14px}
+.setting-card h3{font-size:14px;color:var(--gold2);margin:0 0 8px 0}
+.setting-card p{font-size:11px;color:var(--muted);margin:0 0 10px 0}
+.setting-card input{width:100%;background:#171813;border:1px solid #4a432d;border-radius:8px;padding:8px 10px;color:#fff;font-size:11px;margin-bottom:8px}
+
+/* Chat Umum & Lainnya */
 .contactlist{display:flex;gap:8px;padding:10px 14px;overflow-x:auto;background:#1b1c15;border-bottom:1px solid #494128}
 .contactlist::-webkit-scrollbar{display:none}
 .contact{flex:0 0 auto;border:1px solid #5b5032;border-radius:16px;padding:6px 12px;background:#29291f;color:#e8ddbd;font:11px sans-serif;font-weight:500}
@@ -93,7 +153,6 @@ button{cursor:pointer}
 .chatform input{flex:1;background:#29291f;border:1px solid #5e5436;border-radius:20px;padding:10px 14px;color:#fff4d6;font:12px sans-serif;outline:none}
 .send{border:0;background:var(--gold);color:#1b1a12;border-radius:50%;width:36px;height:36px;display:grid;place-items:center;font-weight:bold}
 
-/* Map, Gallery, Spells, Music style */
 .maparea{padding:16px}
 .map{position:relative;height:340px;border:1px solid #897447;border-radius:16px;overflow:hidden;
  background:repeating-linear-gradient(35deg,#c9b88a08 0 2px,transparent 2px 8px),#d9c99d;color:#493d27}
@@ -126,9 +185,31 @@ button{cursor:pointer}
 </head>
 <body>
 <div class="phone" aria-label="Hogwarts Phone">
+  <div style="position:absolute;z-index:100;top:11px;left:50%;transform:translateX(-50%);width:110px;height:28px;cursor:pointer;" onclick="toggleControlCenter()"></div>
   <div class="status"><span id="statusTime">9:41</span><span>5G ⚡ 100%</span></div>
 
-  <!-- Lock Screen: Cukup ketuk layar/teks untuk memunculkan sandi (PIN: 1811) -->
+  <!-- Notifikasi Banner -->
+  <div class="notification-banner" id="notifBanner" onclick="openApp('feed')">
+    <div class="notif-icon" id="notifIcon">📜</div>
+    <div class="notif-text">
+      <b id="notifTitle">WizardFeed</b>
+      <span id="notifDesc">Seseorang mengirimimu pesan langsung (DM).</span>
+    </div>
+  </div>
+
+  <!-- Control Center -->
+  <div class="control-center" id="controlCenter">
+    <div style="font-size:16px;font-weight:bold;color:var(--gold2);text-align:center;margin-bottom:10px">Pusat Kontrol Sihir</div>
+    <div class="cc-grid">
+      <div class="cc-tile active" id="ccWifi" onclick="toggleCC('ccWifi')"><span>📶</span><b>Wi-Fi Hogwarts</b></div>
+      <div class="cc-tile active" id="ccSilent" onclick="toggleCC('ccSilent')"><span>🪄</span><b>Mode Mantra Senyap</b></div>
+      <div class="cc-tile active" id="ccBattery" onclick="toggleCC('ccBattery')"><span>⚡</span><b>Baterai Patronus</b></div>
+      <div class="cc-tile" onclick="toggleControlCenter(); openApp('settings')"><span>⚙️</span><b>Pengaturan HP</b></div>
+    </div>
+    <button class="post-btn" style="margin-top:auto;padding:12px;border-radius:20px" onclick="toggleControlCenter()">Tutup</button>
+  </div>
+
+  <!-- Lock Screen -->
   <section class="screen active" id="lockScreen">
     <div class="lock" id="lockArea" onclick="showPasscodePad()">
       <div class="lock-main">
@@ -138,7 +219,6 @@ button{cursor:pointer}
       </div>
       <div class="lock-hint">▲ Ketuk di sini untuk masukkan sandi</div>
 
-      <!-- Passcode Pad (Muncul halus dari bawah saat layar diketuk) -->
       <div class="passcode-wrapper" id="passcodeWrapper" onclick="event.stopPropagation()">
         <div style="font-size:12px;color:var(--gold2);margin-bottom:14px;letter-spacing:1px;">Masukkan Sandi (1811)</div>
         <div class="passcode-dots">
@@ -176,6 +256,7 @@ button{cursor:pointer}
           <p style="color:#d2c8aa;font-size:11px;margin:0;line-height:1.5">Teh hangat siap diseduh, lilin melayang menyala terang, dan burung hantu membawa pesan baru untukmu.</p>
         </div>
         <div class="homegrid">
+          <button class="appicon" onclick="openApp('feed')"><span class="glyph">📜</span>WizardFeed</button>
           <button class="appicon" onclick="openApp('owl')"><span class="glyph">✉</span>Owl Post</button>
           <button class="appicon" onclick="openApp('map')"><span class="glyph">♧</span>Peta Marauder</button>
           <button class="appicon" onclick="openApp('gallery')"><span class="glyph">▧</span>Galeri</button>
@@ -183,15 +264,88 @@ button{cursor:pointer}
           <button class="appicon" onclick="openApp('spells')"><span class="glyph">✧</span>Mantra</button>
           <button class="appicon" onclick="openApp('potions')"><span class="glyph">⚗</span>Ramuan</button>
           <button class="appicon" onclick="openApp('music')"><span class="glyph">♫</span>Musik</button>
+          <button class="appicon" onclick="openApp('settings')"><span class="glyph">⚙</span>Settings</button>
         </div>
       </div>
       
-      <!-- iOS Dock -->
       <div class="dock">
+        <button class="appicon" onclick="openApp('feed')"><span class="glyph">📜</span></button>
         <button class="appicon" onclick="openApp('owl')"><span class="glyph">✉</span></button>
-        <button class="appicon" onclick="openApp('map')"><span class="glyph">♧</span></button>
-        <button class="appicon" onclick="openApp('gallery')"><span class="glyph">▧</span></button>
         <button class="appicon" onclick="openApp('music')"><span class="glyph">♫</span></button>
+        <button class="appicon" onclick="openApp('settings')"><span class="glyph">⚙</span></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- WizardFeed Screen (Linimasa & Tombol ke DM) -->
+  <section class="screen" id="feedScreen">
+    <div class="sectionhead">
+      <div class="sectionhead-left">
+        <button class="back" onclick="goHome()">‹ Beranda</button>
+        <div class="kicker">WIZARDFEED</div>
+        <h2>Linimasa</h2>
+      </div>
+      <button class="head-action-btn" onclick="openDmList()">💌 DM Fans</button>
+    </div>
+    <div class="feed-container">
+      <div class="post-box">
+        <textarea id="postInput" placeholder="Bagikan status atau cuitan sihirmu..."></textarea>
+        <div class="post-actions">
+          <button class="post-btn" onclick="createPost()">Kirim Status ✦</button>
+        </div>
+      </div>
+      <div id="feedList" style="display:flex;flex-direction:column;gap:12px"></div>
+    </div>
+  </section>
+
+  <!-- WizardFeed DM List Screen (Daftar Pesan dari Fans & Karakter) -->
+  <section class="screen" id="feedDmListScreen">
+    <div class="sectionhead">
+      <div class="sectionhead-left">
+        <button class="back" onclick="showScreen('feedScreen')">‹ Feed</button>
+        <div class="kicker">PESAN LANGSUNG</div>
+        <h2>Pesan Masuk (DM)</h2>
+      </div>
+    </div>
+    <div class="dm-list-wrap" id="dmListContainer"></div>
+  </section>
+
+  <!-- WizardFeed DM Chat Room Screen (Ruang Chat DM Tertentu) -->
+  <section class="screen" id="feedDmChatScreen">
+    <div class="sectionhead">
+      <div class="sectionhead-left">
+        <button class="back" onclick="showScreen('feedDmListScreen')">‹ Kembali</button>
+        <div class="kicker" id="dmChatRole">PENGGEMAR HOGWARTS</div>
+        <h2 id="dmChatTitle">Nama Fans</h2>
+      </div>
+    </div>
+    <div class="chatlog" id="feedDmChatLog"></div>
+    <form class="chatform" id="feedDmForm">
+      <input id="feedDmInput" maxlength="300" placeholder="Balas pesan fans..." autocomplete="off" required>
+      <button class="send" type="submit">↑</button>
+    </form>
+  </section>
+
+  <!-- Settings Screen -->
+  <section class="screen" id="settingsScreen">
+    <div class="sectionhead">
+      <div class="sectionhead-left">
+        <button class="back" onclick="goHome()">‹ Beranda</button>
+        <div class="kicker">PENGATURAN HP</div>
+        <h2>Wallpaper</h2>
+      </div>
+    </div>
+    <div class="settings-wrap">
+      <div class="setting-card">
+        <h3>Custom Wallpaper URL</h3>
+        <p>Masukkan link gambar (URL internet) untuk mengubah latar belakang layar kunci dan beranda HP-mu.</p>
+        <input type="text" id="wallpaperUrlInput" placeholder="https://contoh-gambar.jpg">
+        <button class="post-btn" onclick="saveWallpaper()">Terapkan Wallpaper ✦</button>
+      </div>
+      <div class="setting-card">
+        <h3>Reset Wallpaper Default</h3>
+        <p>Kembalikan wallpaper ke pemandangan kastil Hogwarts semula.</p>
+        <button class="post-btn" style="background:#51472e;color:#f2e7c9" onclick="resetWallpaper()">Reset Default</button>
       </div>
     </div>
   </section>
@@ -199,9 +353,11 @@ button{cursor:pointer}
   <!-- Owl Post Screen -->
   <section class="screen" id="owlScreen">
     <div class="sectionhead">
-      <button class="back" onclick="goHome()">‹ Beranda</button>
-      <div class="kicker">OWL POST</div>
-      <h2>Pesan Burung Hantu</h2>
+      <div class="sectionhead-left">
+        <button class="back" onclick="goHome()">‹ Beranda</button>
+        <div class="kicker">OWL POST</div>
+        <h2>Pesan Burung Hantu</h2>
+      </div>
     </div>
     <div class="contactlist" id="contactList"></div>
     <div class="chatbar">
@@ -218,9 +374,11 @@ button{cursor:pointer}
   <!-- Map Screen -->
   <section class="screen" id="mapScreen">
     <div class="sectionhead">
-      <button class="back" onclick="goHome()">‹ Beranda</button>
-      <div class="kicker">I SOLEMNLY SWEAR...</div>
-      <h2>Peta Marauder</h2>
+      <div class="sectionhead-left">
+        <button class="back" onclick="goHome()">‹ Beranda</button>
+        <div class="kicker">I SOLEMNLY SWEAR...</div>
+        <h2>Peta Marauder</h2>
+      </div>
     </div>
     <div class="maparea">
       <div class="map" id="map">
@@ -240,9 +398,11 @@ button{cursor:pointer}
   <!-- Gallery Screen -->
   <section class="screen" id="galleryScreen">
     <div class="sectionhead">
-      <button class="back" onclick="goHome()">‹ Beranda</button>
-      <div class="kicker">MEMORIES</div>
-      <h2>Galeri Foto</h2>
+      <div class="sectionhead-left">
+        <button class="back" onclick="goHome()">‹ Beranda</button>
+        <div class="kicker">MEMORIES</div>
+        <h2>Galeri Foto</h2>
+      </div>
     </div>
     <div class="gallerywrap">
       <label class="uploadlabel">＋ Tambah Foto dari Perangkat<input id="galleryInput" type="file" accept="image/*" multiple></label>
@@ -256,9 +416,11 @@ button{cursor:pointer}
   <!-- Daily Prophet Screen -->
   <section class="screen" id="prophetScreen">
     <div class="sectionhead">
-      <button class="back" onclick="goHome()">‹ Beranda</button>
-      <div class="kicker">WIZARDING NEWS</div>
-      <h2>The Daily Prophet</h2>
+      <div class="sectionhead-left">
+        <button class="back" onclick="goHome()">‹ Beranda</button>
+        <div class="kicker">WIZARDING NEWS</div>
+        <h2>The Daily Prophet</h2>
+      </div>
     </div>
     <article class="paper">
       <div class="mast">THE DAILY PROPHET</div>
@@ -271,9 +433,11 @@ button{cursor:pointer}
   <!-- Spells Screen -->
   <section class="screen" id="spellsScreen">
     <div class="sectionhead">
-      <button class="back" onclick="goHome()">‹ Beranda</button>
-      <div class="kicker">SPELLBOOK</div>
-      <h2>Buku Mantra</h2>
+      <div class="sectionhead-left">
+        <button class="back" onclick="goHome()">‹ Beranda</button>
+        <div class="kicker">SPELLBOOK</div>
+        <h2>Buku Mantra</h2>
+      </div>
     </div>
     <div class="list" id="spellList"></div>
   </section>
@@ -281,9 +445,11 @@ button{cursor:pointer}
   <!-- Potions Screen -->
   <section class="screen" id="potionsScreen">
     <div class="sectionhead">
-      <button class="back" onclick="goHome()">‹ Beranda</button>
-      <div class="kicker">POTIONS</div>
-      <h2>Catatan Ramuan</h2>
+      <div class="sectionhead-left">
+        <button class="back" onclick="goHome()">‹ Beranda</button>
+        <div class="kicker">POTIONS</div>
+        <h2>Catatan Ramuan</h2>
+      </div>
     </div>
     <div class="list" id="potionList"></div>
   </section>
@@ -291,9 +457,11 @@ button{cursor:pointer}
   <!-- Music Screen -->
   <section class="screen" id="musicScreen">
     <div class="sectionhead">
-      <button class="back" onclick="goHome()">‹ Beranda</button>
-      <div class="kicker">COMMON ROOM SOUNDS</div>
-      <h2>Pemutar Musik</h2>
+      <div class="sectionhead-left">
+        <button class="back" onclick="goHome()">‹ Beranda</button>
+        <div class="kicker">COMMON ROOM SOUNDS</div>
+        <h2>Pemutar Musik</h2>
+      </div>
     </div>
     <div class="player">
       <div class="vinyl" id="vinylDisc"><span>♫</span></div>
@@ -306,8 +474,9 @@ button{cursor:pointer}
 
 <script>
 const screens = {
-  home:'homeScreen', owl:'owlScreen', map:'mapScreen', gallery:'galleryScreen',
-  prophet:'prophetScreen', spells:'spellsScreen', potions:'potionsScreen', music:'musicScreen'
+  home:'homeScreen', feed:'feedScreen', feedDmList:'feedDmListScreen', feedDmChat:'feedDmChatScreen',
+  owl:'owlScreen', map:'mapScreen', gallery:'galleryScreen', prophet:'prophetScreen', 
+  spells:'spellsScreen', potions:'potionsScreen', music:'musicScreen', settings:'settingsScreen'
 };
 
 function updateClock(){
@@ -320,7 +489,61 @@ function updateClock(){
 }
 updateClock(); setInterval(updateClock,1000);
 
-// Sistem PIN Sandi (1811) dengan Trigger Ketuk Layar
+// Notifikasi Banner
+function showNotification(title, desc, icon = '📜') {
+  const banner = document.getElementById('notifBanner');
+  document.getElementById('notifTitle').textContent = title;
+  document.getElementById('notifDesc').textContent = desc;
+  document.getElementById('notifIcon').textContent = icon;
+  
+  banner.classList.add('show');
+  playMagicChime();
+
+  setTimeout(() => {
+    banner.classList.remove('show');
+  }, 4000);
+}
+
+// Simulasi Notifikasi DM Fans Masuk setelah beberapa detik
+setTimeout(() => {
+  showNotification("Pesan DM Baru 💌", "@hogwarts_fangirl mengirimimu pesan langsung: 'Kak, spill dong resep ramuan rahasianya!'");
+}, 7000);
+
+// Control Center
+function toggleControlCenter() {
+  playMagicChime();
+  document.getElementById('controlCenter').classList.toggle('show');
+}
+
+function toggleCC(id) {
+  playMagicChime();
+  document.getElementById(id).classList.toggle('active');
+}
+
+// Custom Wallpaper
+const savedWallpaper = localStorage.getItem('hogwarts_wallpaper');
+if(savedWallpaper) {
+  document.documentElement.style.setProperty('--bg-wallpaper', `url('${savedWallpaper}')`);
+}
+
+function saveWallpaper() {
+  const url = document.getElementById('wallpaperUrlInput').value.trim();
+  if(!url) return;
+  document.documentElement.style.setProperty('--bg-wallpaper', `url('${url}')`);
+  localStorage.setItem('hogwarts_wallpaper', url);
+  playMagicChime();
+  alert('Wallpaper berhasil diubah!');
+}
+
+function resetWallpaper() {
+  const defaultBg = "url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80')";
+  document.documentElement.style.setProperty('--bg-wallpaper', defaultBg);
+  localStorage.removeItem('hogwarts_wallpaper');
+  playMagicChime();
+  alert('Wallpaper dikembalikan ke default.');
+}
+
+// PIN Sandi (1811)
 let enteredPin = '';
 const correctPin = '1811';
 
@@ -372,7 +595,6 @@ function checkPin() {
     wrapper.style.transform = 'translateY(0) translateX(8px)';
     setTimeout(() => wrapper.style.transform = 'translateY(0) translateX(-8px)', 80);
     setTimeout(() => wrapper.style.transform = 'translateY(0) translateX(0)', 160);
-    
     enteredPin = '';
     updateDots();
   }
@@ -416,15 +638,181 @@ function playMagicChime() {
   } catch(e) {}
 }
 
+// WizardFeed & Fitur DM Fans
+let defaultFeed = [
+  {id: 1, author: 'Harry Potter', avatar: '⚡', time: '10m lalu', text: 'Ada yang tau kenapa Snape ngeliatin aku sinis banget hari ini?', replies: [{author: 'Ron Weasley', text: 'Klasik Harry, emang dia sirik aja.'}]},
+  {id: 2, author: 'Hermione Granger', avatar: '📚', time: '1j lalu', text: 'Perpustakaan Hogwarts kedatangan buku mantra kuno abad ke-15! ✨', replies: [{author: 'Luna Lovegood', text: 'Kudengar buku itu dijaga peri angin.'}]}
+];
+
+let feedPosts = JSON.parse(localStorage.getItem('hogwarts_feed')) || defaultFeed;
+
+const citizenReplies = [
+  {author: 'Luna Lovegood', text: 'Wah, menarik sekali pemikiranmu itu! 🌙'},
+  {author: 'Ron Weasley', text: 'Setuju banget sih kalau soal itu haha.'},
+  {author: 'Hermione Granger', text: 'Menurutku argumenmu perlu ditinjau dari buku sejarah.'},
+  {author: 'Draco Malfoy', text: 'Cuitan macam apa ini? Buang-buang waktu saja.'},
+  {author: 'Cedric Diggory', text: 'Semangat ya jalani harimu! Hufflepuff selalu mendukungmu ✨'}
+];
+
+function renderFeed() {
+  const list = document.getElementById('feedList');
+  list.innerHTML = '';
+  feedPosts.forEach(post => {
+    const div = document.createElement('div');
+    div.className = 'tweet';
+    
+    let repliesHtml = '';
+    if(post.replies && post.replies.length > 0) {
+      repliesHtml = '<div class="replies-box">';
+      post.replies.forEach(r => {
+        repliesHtml += `<div class="reply-item"><span class="reply-author">@${r.author}:</span>${r.text}</div>`;
+      });
+      repliesHtml += '</div>';
+    }
+
+    div.innerHTML = `
+      <div class="tweet-top">
+        <div class="tweet-avatar">${post.avatar}</div>
+        <div class="tweet-content">
+          <div class="tweet-header">
+            <span class="tweet-author">${post.author}</span>
+            <span class="tweet-time">${post.time}</span>
+          </div>
+          <div class="tweet-text">${post.text}</div>
+        </div>
+      </div>
+      ${repliesHtml}
+    `;
+    list.appendChild(div);
+  });
+}
+
+function createPost() {
+  const input = document.getElementById('postInput');
+  const text = input.value.trim();
+  if(!text) return;
+
+  playMagicChime();
+  const newPostId = Date.now();
+  const newPost = {
+    id: newPostId,
+    author: 'Kamu (Witch/Wizard)',
+    avatar: '🪄',
+    time: 'Baru saja',
+    text: text,
+    replies: []
+  };
+  
+  feedPosts.unshift(newPost);
+  localStorage.setItem('hogwarts_feed', JSON.stringify(feedPosts));
+  input.value = '';
+  renderFeed();
+
+  setTimeout(() => {
+    const randomCitizen = citizenReplies[Math.floor(Math.random() * citizenReplies.length)];
+    const targetPost = feedPosts.find(p => p.id === newPostId);
+    if(targetPost) {
+      targetPost.replies.push(randomCitizen);
+      localStorage.setItem('hogwarts_feed', JSON.stringify(feedPosts));
+      renderFeed();
+      showNotification("WizardFeed 📜", `${randomCitizen.author} mengomentari statusmu.`);
+    }
+  }, 2000);
+}
+
+renderFeed();
+
+// Sistem DM Twitter / WizardFeed dengan Fans & Karakter
+let dmConversations = JSON.parse(localStorage.getItem('hogwarts_dm_convs')) || {
+  'fan1': { name: '@hogwarts_fangirl', avatar: '💖', role: 'Fans Setia Hufflepuff', messages: [{kind:'incoming', text:'Kak! Sumpah status kakak tadi keren banget! Boleh minta tips ramuan gak? 😭'}] },
+  'fan2': { name: '@slytherin_prince', avatar: '🐍', role: 'Pengagum Rahasia', messages: [{kind:'incoming', text:'Jangan sering-sering senyum di koridor. Banyak yang merhatiin tau... (termasuk aku).'}] },
+  'fan3': { name: '@luna_loves', avatar: '🌙', role: 'Teman & Fans Seni', messages: [{kind:'incoming', text:'Halo! Aku suka caramu nulis cuitan di WizardFeed. Penuh energi positif.'}] }
+};
+
+let currentDmUser = 'fan1';
+
+function openDmList() {
+  showScreen('feedDmList');
+  const container = document.getElementById('dmListContainer');
+  container.innerHTML = '';
+  
+  Object.entries(dmConversations).forEach(([id, conv]) => {
+    const lastMsg = conv.messages[conv.messages.length - 1] ? conv.messages[conv.messages.length - 1].text : 'Belum ada pesan';
+    const item = document.createElement('div');
+    item.className = 'dm-conv-item';
+    item.innerHTML = `
+      <div class="dm-avatar">${conv.avatar}</div>
+      <div class="dm-info">
+        <div class="dm-name">${conv.name}</div>
+        <div class="dm-snippet">${lastMsg}</div>
+      </div>
+    `;
+    item.onclick = () => openDmChat(id);
+    container.appendChild(item);
+  });
+}
+
+function openDmChat(id) {
+  currentDmUser = id;
+  const conv = dmConversations[id];
+  document.getElementById('dmChatTitle').textContent = conv.name;
+  document.getElementById('dmChatRole').textContent = conv.role;
+  showScreen('feedDmChat');
+  renderDmChat();
+}
+
+function renderDmChat() {
+  const log = document.getElementById('feedDmChatLog');
+  log.innerHTML = '';
+  const conv = dmConversations[currentDmUser];
+  conv.messages.forEach(m => {
+    const bubble = document.createElement('div');
+    bubble.className = 'bubble ' + m.kind;
+    bubble.textContent = m.text;
+    log.appendChild(bubble);
+  });
+  log.scrollTop = log.scrollHeight;
+}
+
+document.getElementById('feedDmForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const input = document.getElementById('feedDmInput');
+  const val = input.value.trim();
+  if(!val) return;
+
+  playMagicChime();
+  dmConversations[currentDmUser].messages.push({kind: 'outgoing', text: val});
+  localStorage.setItem('hogwarts_dm_convs', JSON.stringify(dmConversations));
+  renderDmChat();
+  input.value = '';
+
+  // Balasan otomatis dari Fans/Karakter setelah 1 detik
+  setTimeout(() => {
+    const fanReplies = [
+      "Aaaaa dibales! Makasih banyak kak! 😭✨",
+      "Wah beneran? Kakak baik banget sih aslinya!",
+      "Aku bakal screenshot chat ini buat dipajang di asrama! 🫶",
+      "Intinya hati-hati ya kak, jangan sampe kecapekan."
+    ];
+    const replyText = fanReplies[Math.floor(Math.random() * fanReplies.length)];
+    dmConversations[currentDmUser].messages.push({kind: 'incoming', text: replyText});
+    localStorage.setItem('hogwarts_dm_convs', JSON.stringify(dmConversations));
+    if(screens['feedDmChat'] && document.getElementById('feedDmChatScreen').classList.contains('active')) {
+      renderDmChat();
+    }
+    showNotification("DM Baru 💌", `${dmConversations[currentDmUser].name} membalas pesanmu.`);
+  }, 1200);
+});
+
+// Spells & Potions
 const spells=[
  ['Lumos','Menciptakan cahaya di ujung tongkat sihir.'],
  ['Nox','Mematikan cahaya yang dihasilkan oleh mantra Lumos.'],
  ['Alohomora','Membuka berbagai pintu dan objek terkunci di dunia sihir.'],
  ['Accio','Memanggil objek mendekat ke arah penyihir.'],
- ['Expecto Patronum','Memunculkan Patronus pelindung dari Dementor.']
+ ['Expecto Patronum','Conjures a Patronus pelindung dari Dementor.']
 ];
-const potions=[
- ['Wiggenweld Potion','Ramuan penyembuh luka dalam dunia sihir.'],
+const potions=[lam dunia sihir.'],
  ['Felix Felicis','Ramuan keberuntungan sementara (liquid luck).'],
  ['Amortentia','Ramuan cinta paling kuat dengan aroma khas kesukaan peminumnya.']
 ];
@@ -449,43 +837,27 @@ function fillCards(target,items){
 }
 fillCards('spellList',spells); fillCards('potionList',potions);
 
-// Sifat Karakter & Variasi Balasan Chat Natural (Anti-AI)
+// Chat Owl Post
 const characters = {
  harry:{
    name:'Harry Potter', avatar:'⚡', status:'Gryffindor · online',
    messages:[{kind:'incoming', text:'Hei... Hermione bilang semalam kamu nanyain PR ramuan ya? Sorry baru bales.'}],
-   replies:[
-     'Haha iya, soalnya susah banget kalau dikerjain sendirian.',
-     'Mau ngerjain bareng di perpustakaan nanti sore?',
-     'Makasih ya udah mau ngingetin aku, kadang aku suka pelupa kalau soal tugas.'
-   ]
+   replies:[['Haha iya, soalnya susah banget kalau dikerjain sendirian.'], ['Mau ngerjain bareng di perpustakaan nanti sore?']]
  },
  hermione:{
    name:'Hermione Granger', avatar:'📚', status:'Gryffindor · di perpustakaan',
    messages:[{kind:'incoming', text:'Catatan materinya sudah kubawa. Jangan lupa dibaca sebelum kelas Prof. McGonagall mulai ya!'}],
-   replies:[
-     'Siap, makasih banyak ya Hermione! Kamu emang paling gercep.',
-     'Nanti kalau ada yang kurang paham, aku boleh nanya lagi kan?',
-     'Catatanmu rapi banget, aku selalu terbantu.'
-   ]
+   replies:[['Siap, makasih banyak ya Hermione! Kamu emang paling gercep.'], ['Nanti kalau ada yang kurang paham, aku boleh nanya lagi kan?']]
  },
  cedric:{
    name:'Cedric Diggory', avatar:'🏆', status:'Hufflepuff · champion',
    messages:[{kind:'incoming', text:'Hei! Tadi aku lihat kamu di koridor lantai tiga keliatan capek. Jangan diforsir banget belajarnya ya. ✨'}],
-   replies:[
-     'Iya nih, lumayan padat jadwalnya minggu ini. Makasih perhatiannya ya ced!',
-     'Lagi nyari angin sebentar kok. Kamu sendiri gimana latihannya?',
-     'Ah jadi seneng dapet perhatian gini haha. Makasih ya!'
-   ]
+   replies:[['Iya nih, lumayan padat jadwalnya minggu ini. Makasih perhatiannya ya ced!'], ['Lagi nyari angin sebentar kok. Kamu sendiri gimana latihannya?']]
  },
  draco:{
    name:'Draco Malfoy', avatar:'🐍', status:'Slytherin',
    messages:[{kind:'incoming', text:'Jangan GR ya. Aku cuma kebetulan lewat ruang rekreasi Hufflepuff dan kelebihan buku ini. Ambil kalau mau.'}],
-   replies:[
-     'Wah tumben banget Draco Malfoy berbaik hati ngasih buku?',
-     'Gengsinya disimpen dulu ngapa haha, makasih ya bukunya.',
-     'Bilang aja sengaja nyari aku, ngaku deh.'
-   ]
+   replies:[['Wah tumben banget Draco Malfoy berbaik hati ngasih buku?'], ['Gengsinya disimpen dulu ngapa haha, makasih ya bukunya.']]
  }
 };
 
@@ -528,10 +900,11 @@ document.getElementById('chatForm').addEventListener('submit',e=>{
  
  setTimeout(()=>{
   const charData = characters[currentCharacter];
-  const randomReply = charData.replies[Math.floor(Math.random() * charData.replies.length)];
+  const randomReply = charData.replies[Math.floor(Math.random() * charData.replies.length)][0];
   chatHistory[currentCharacter].push({kind:'incoming',text:randomReply});
   saveChats();
   renderChat();
+  showNotification("Pesan Baru ✉️", `${charData.name} membalas pesanmu.`);
  }, 800);
 });
 
@@ -544,6 +917,7 @@ function addBubble(text,kind){
 function saveChats(){ localStorage.setItem('hogwarts_chats', JSON.stringify(chatHistory)); }
 renderContacts(); selectContact('harry');
 
+// Galeri & Musik
 const savedPhotos = JSON.parse(localStorage.getItem('hogwarts_photos')) || [];
 const photoRoot = document.getElementById('photos');
 
@@ -585,3 +959,4 @@ document.getElementById('audioInput').addEventListener('change',e=>{
 </script>
 </body>
 </html>
+ ['Wiggenweld Potion','Ramuan penyembuh luka da
